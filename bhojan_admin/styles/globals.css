@@ -1,26 +1,122 @@
-html,
-body {
-  padding: 0;
+*{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
+  padding: 0;
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.root{
+  position : relative;
+  width : 100vw;
+  height : 100vh;
+  background-color : #E0E0E0;
+}
+
+
+.developed_by{
+  font-family: 'Ubuntu', sans-serif;
+  display: flex;
+  flex-direction: column;
+  width : 240px;
+  height : 180px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1;
+  position: absolute;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  border-radius : 16px;
+  background: #e0e0e0;
+}
+
+
+.developed_by__title{
+  font-size: 22px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+}
+
+.developed_by .developed_by__horizontal_division{
+  margin-top: 8px;
+  width: 100%;
+  height: 4px;
+}
+
+.developed_by__developers{
+  font-size: 16px;
+  font-weight: normal;
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+}
+
+.login{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Ubuntu', sans-serif;
+  width : 600px;
+  height : 280px;
+  z-index: 10;
+  border-radius : 16px;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  background: #e0e0e0;
+  padding: 16px;
+}
+
+.login .login__login_button{
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  padding:8px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  background-color: teal;
+  border-radius : 16px;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  user-select: none;
+}
+
+.login__login_title{
+  font-size: 26px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+}
+
+
+.enterusername_wrapper{
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.enterpassword_wrapper{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.loginbutton_wrapper{
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+
+}
+
+.inputbox {
+    width: 60%;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    border: 0;
+    outline: 0;
+    border-bottom: 2px solid grey;
+    color : black;
+    line-height: 30px;
+    background-color: #e0e0e0;
 }
