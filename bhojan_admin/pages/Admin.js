@@ -53,6 +53,46 @@ const PageDetailHeader = styled.div`
   text-align : center;
 `;
 
+const EnterFullName = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 50%;
+`;
+const EnterUserName = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 50%;
+`;
+const EnterPassword = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 40%;
+`;
+const ConfirmPassword = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 40%;
+`;
 
 // All the pages for the PageButton 
 //
@@ -60,7 +100,16 @@ const __AddAdmin = () => {
   return <>
     <PageDetail>
       <PageDetailHeader>Add Admin</PageDetailHeader>
-      <input></input>
+      <EnterFullName placeholder="Enter Full Name (Eg. Rishad Baniya)"></EnterFullName>
+      <EnterPassword type="password" placeholder="Enter Your Password"/>
+      <ConfirmPassword type="password" placeholder="Confirm Your Password"/>
+      <div>
+        <input type="radio" value="Male" name="gender"/>
+        <p>Male</p>
+      </div>
+      <div>
+      <input type="radio" value="Female" name="gender"/>
+      </div>
     </PageDetail>
     </>
 }
