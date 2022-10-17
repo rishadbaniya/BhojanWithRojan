@@ -1,4 +1,6 @@
-# BhojanWithRojan 🍰
+# BhojanWithRojan - Just another Canteen Management System
+
+<img src="https://user-images.githubusercontent.com/54678051/196235289-0b9ac354-d8bc-4f54-9101-2a789817359c.png" width="200" height="200">
 
 ## Project Members:
 - [Rishad Baniya](https://github.com/rishadbaniya)
