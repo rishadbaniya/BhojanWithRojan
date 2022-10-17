@@ -45,7 +45,7 @@ const PageDetail = styled.div`
 `;
 
 const PageDetailHeader = styled.div`
-  font-size : 24px;
+  font-size : 26px;
   font-family : 'Ubuntu', sans-serif;
   font-weight : bold;
   padding : 0px 0px 16px 0px;
@@ -63,7 +63,7 @@ const EnterFullName = styled.input`
   border-radius : 8px;
   width : 50%;
 `;
-const EnterUserName = styled.input`
+const EnterUserNameEmail = styled.input`
   margin-top : 16px;
   border: 0;
   outline: 0;
@@ -94,22 +94,132 @@ const ConfirmPassword = styled.input`
   width : 40%;
 `;
 
+
+const WrapperMaleFemaleWrapper = styled.div`
+  display : flex;
+`;
+
+const MaleFemaleWrapper = styled.div`
+  padding: 16px 8px 8px 8px;
+  display : inline-block;
+  font-family : 'Ubuntu', sans-serif;
+  font-size : 16px;
+`;
+
+const Gender = styled.input`
+  display:inline-block;
+`
+const InputYear = styled.input`
+  margin-top : 16x;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 10%;
+`;
+
+const InputMonth = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 8%;
+`;
+
+const InputDay = styled.input`
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 8%;
+`;
+
+const EnterDOB = styled.div`
+  font-weight : bold;
+  padding-top : 16px;
+  padding-bottom : 16px;
+  font-size : 18px;
+  font-family : 'Ubuntu', sans-serif;
+`;
 // All the pages for the PageButton 
 //
 const __AddAdmin = () => {
+
+  const [currentState, updateState] = useState({
+    full_name : "",
+    username : "",
+    email : "",
+    password : "",
+    confirm_password : "",
+    gender : "",
+  })
+
+  const onEnterFullNameChange = (event) => {
+    updateState({
+      ...currentState,
+      full_name : event.target.value
+    });
+  }
+
+  const onEnterUsernameChange = (event) => {
+    updateState({
+      ...currentState,
+      username : event.target.value
+    });
+  }
+
+  const onEnterEmailChange = (event) => {
+    updateState({
+      ...currentState,
+      email : event.target.value
+    });
+  }
+
+  const onEnterPasswordChange = (event) => {
+    updateState({
+      ...currentState,
+      password : event.target.value
+    });
+  }
+
+  const onEnterConfirmPasswordChange = (event) => {
+    updateState({
+      ...currentState,
+      confirm_password : event.target.value
+    });
+  }
+
+
   return <>
     <PageDetail>
       <PageDetailHeader>Add Admin</PageDetailHeader>
-      <EnterFullName placeholder="Enter Full Name (Eg. Rishad Baniya)"></EnterFullName>
-      <EnterPassword type="password" placeholder="Enter Your Password"/>
-      <ConfirmPassword type="password" placeholder="Confirm Your Password"/>
-      <div>
-        <input type="radio" value="Male" name="gender"/>
-        <p>Male</p>
-      </div>
-      <div>
-      <input type="radio" value="Female" name="gender"/>
-      </div>
+      <EnterFullName placeholder="Enter Full Name (Eg. Rishad Baniya)" onChange={onEnterFullNameChange}/>
+      <EnterUserNameEmail placeholder="Enter username (Eg. rishadbaniya)" onChange={onEnterUsernameChange}/>
+      <EnterUserNameEmail placeholder="Enter email (Eg. xyz@gmail.com)" onChange={onEnterUsernameChange}/>
+      <EnterPassword type="password" placeholder="Enter Your Password" onChange={onEnterPasswordChange}/>
+      <ConfirmPassword type="password" placeholder="Confirm Your Password" onChange={onEnterConfirmPasswordChange}/>
+      <WrapperMaleFemaleWrapper>
+      <MaleFemaleWrapper>
+        <Gender type="radio" value="Male" name="gender"/>
+        <span style={{marginLeft : "4px"}}>Male</span>
+      </MaleFemaleWrapper>
+      <MaleFemaleWrapper>
+        <Gender type="radio" value="Male" name="gender"/>
+        <span style={{marginLeft : "4px"}}>Female</span>
+      </MaleFemaleWrapper>
+      </WrapperMaleFemaleWrapper>
+      <EnterDOB>Enter Date Of Birth :</EnterDOB>
+        <InputYear placeholder="Year" type="number"/>
+        <InputMonth placeholder="Month" type="number"/>
+        <InputDay placeholder="Day"type="number"/>
     </PageDetail>
     </>
 }
@@ -211,11 +321,6 @@ const PageButton = (props) => {
   </>
 }
 
-
-
-
-
-//
 export default Admin;
 
 

@@ -12,8 +12,6 @@ const DEVELOPERS = [
   "Rojan Gautam"
 ];
 
-let X = 0;
-
 const DevelopedBy = () =>{
   return <>
     <div className="developed_by">
