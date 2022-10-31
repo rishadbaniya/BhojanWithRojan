@@ -16,7 +16,7 @@ export const AddAdmin = () => {
         year : 0
     },
   });
- const [images, setImages] =useState([]);
+ const [images, setImages] = useState([]);
 
   const onEnterFullNameChange = (event) => {
     updateState({
