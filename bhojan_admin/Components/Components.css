@@ -1,0 +1,55 @@
+.page_detail{
+  padding : 16px;
+  display : flex;
+  flex-direction : column;
+  border-radius : 16px;
+  height : 80vh;
+  width : 60vw;
+  position : absolute;
+  left : 50%;
+  bottom: 50%;
+  transform: translate(-50%,50%);
+  border-radius : 16px;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.page_detail::-webkit-scrollbar {
+    display: none;
+}
+  
+.page_detail_header{
+  font-size : 28px;
+  font-family : 'Ubuntu', sans-serif;
+  font-weight : bold;
+  padding : 0px 0px 24px 0px;
+  width : 100%;
+  text-align : center;
+}
+
+.enter_full_name{
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 50%;
+}
+
+.upload_image{
+  margin-top : 16px;
+  font-family : 'Ubuntu', sans-serif;
+  font-size : 16px;
+  padding : 4px;
+  cursor : pointer;
+}
+
+.submit{
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    padding: 8px;
+}
