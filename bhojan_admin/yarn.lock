@@ -537,6 +537,16 @@
   "resolved" "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   "version" "0.0.1"
 
+"convert-hex@~0.1.0":
+  "integrity" "sha512-w20BOb1PiR/sEJdS6wNrUjF5CSfscZFUp7R9NSlXH8h2wynzXVEPFPJECAnkNylZ+cvf3p7TyRUHggDmrwXT9A=="
+  "resolved" "https://registry.npmjs.org/convert-hex/-/convert-hex-0.1.0.tgz"
+  "version" "0.1.0"
+
+"convert-string@~0.1.0":
+  "integrity" "sha512-1KX9ESmtl8xpT2LN2tFnKSbV4NiarbVi8DVb39ZriijvtTklyrT+4dT1wsGMHKD3CJUjXgvJzstm9qL9ICojGA=="
+  "resolved" "https://registry.npmjs.org/convert-string/-/convert-string-0.1.0.tgz"
+  "version" "0.1.0"
+
 "core-js-pure@^3.25.1":
   "integrity" "sha512-oml3M22pHM+igfWHDfdLVq2ShWmjM2V4L+dQEBs0DWVIqEm9WHCwGAlZ6BmyBQGy5sFrJmcx+856D9lVKyGWYg=="
   "resolved" "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.25.5.tgz"
@@ -1614,7 +1624,7 @@
   "resolved" "https://registry.npmjs.org/qwebchannel/-/qwebchannel-6.2.0.tgz"
   "version" "6.2.0"
 
-"react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.8.0", "react-dom@18.2.0":
+"react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.8.0", "react-dom@>=16.8.0", "react-dom@18.2.0":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
@@ -1622,12 +1632,17 @@
     "loose-envify" "^1.1.0"
     "scheduler" "^0.23.0"
 
+"react-images-uploading@^3.1.7":
+  "integrity" "sha512-woET50eCezm645iIeP4gCoN7HjdR3T64UXC5l53yd+2vHFp+pwABH8Z/aAO5IXDeC1aP6doQ+K738L701zswAw=="
+  "resolved" "https://registry.npmjs.org/react-images-uploading/-/react-images-uploading-3.1.7.tgz"
+  "version" "3.1.7"
+
 "react-is@^16.13.1", "react-is@^16.7.0", "react-is@>= 16.8.0":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
-"react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.2.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@18.2.0":
+"react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.2.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.8.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -1722,6 +1737,14 @@
   "version" "7.3.8"
   dependencies:
     "lru-cache" "^6.0.0"
+
+"sha256@^0.2.0":
+  "integrity" "sha512-kTWMJUaez5iiT9CcMv8jSq6kMhw3ST0uRdcIWl3D77s6AsLXNXRp3heeqqfu5+Dyfu4hwpQnMzhqHh8iNQxw0w=="
+  "resolved" "https://registry.npmjs.org/sha256/-/sha256-0.2.0.tgz"
+  "version" "0.2.0"
+  dependencies:
+    "convert-hex" "~0.1.0"
+    "convert-string" "~0.1.0"
 
 "shallowequal@^1.1.0":
   "integrity" "sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ=="

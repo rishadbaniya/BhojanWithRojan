@@ -1,5 +1,7 @@
 import {useState} from 'react';
 import styled from 'styled-components';
+import hash_256 from 'sha256';
+import ImageUploading from 'react-images-uploading';
 
 const PageButtonClicked = (index) => {
   switch(index) {
@@ -149,6 +151,8 @@ const EnterDOB = styled.div`
   font-size : 18px;
   font-family : 'Ubuntu', sans-serif;
 `;
+
+
 // All the pages for the PageButton 
 //
 const __AddAdmin = () => {
@@ -195,7 +199,37 @@ const __AddAdmin = () => {
       ...currentState,
       confirm_password : event.target.value
     });
+
+    let submission_data_object = {
+      ...currentState,
+    }
+    //delete submission_data_object["confirm_password"];
+    submission_data_object.password = hash_256(currentState.confirm_password);
+
+    let submission_data_JSON = JSON.stringify(currentState);
+    console.log(submission_data_JSON);
   }
+
+  const onImageUpload = (event) => {
+    console.log("The image was uploaded here");
+    console.log(event.target);
+  }
+
+  // TODO : Handle errors, such as what happens when the user doesn't input the name and submits
+  // TODO : Check if the password matches witht he confirm password
+  // or he/she doesn't mention the gender at all.
+  // We'll consider that the user is gonna fill everything
+  const onSubmitClick = () => {
+
+
+  }
+  const [images, setImages] =useState([]);
+  const maxNumber = 69;
+  const onChange = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
 
 
   return <>
@@ -220,10 +254,65 @@ const __AddAdmin = () => {
         <InputYear placeholder="Year" type="number"/>
         <InputMonth placeholder="Month" type="number"/>
         <InputDay placeholder="Day"type="number"/>
+     <ImageUploading
+        value={images}
+        onChange={onChange}
+        maxNumber={maxNumber}
+        dataURLKey="data_url"
+      >
+        {({
+          imageList,
+          onImageUpload,
+          onImageRemoveAll,
+          onImageUpdate,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          // write your building UI
+          <div>
+            <UploadImage
+              style={isDragging ? { color: 'red' } : undefined}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              Click or Drop here
+            </UploadImage>
+
+            &nbsp;
+            {imageList.map((image, index) => (
+              <div key={index} className="image-item">
+                <img src={image['data_url']} alt="" width="100" />
+                <div className="image-item__btn-wrapper">
+                  <UpdateRemove onClick={() => onImageUpdate(index)}>Update</UpdateRemove>
+                  <UpdateRemove onClick={() => onImageRemove(index)}>Remove</UpdateRemove>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </ImageUploading>
     </PageDetail>
     </>
 }
 
+
+const UploadImage = styled.button`
+  margin-top : 16px;
+  font-family : 'Ubuntu', sans-serif;
+  font-size : 16px;
+  padding : 4px;
+  cursor : pointer;
+`;
+
+const UpdateRemove = styled.button`
+  margin-top : 8px;
+  font-family : 'Ubuntu', sans-serif;
+  font-size : 12px;
+  padding : 4px;
+  cursor : pointer;
+
+`;
 
 const __EditAdmin = () => {
   return <>
