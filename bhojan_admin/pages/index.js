@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import {QWebChannel} from 'qwebchannel';
+import Admin from "./Admin";
 
 import {useState, useEffect} from 'react';
 
@@ -10,10 +11,6 @@ const DEVELOPERS = [
   "Kapil Adhikari",
   "Rojan Gautam"
 ];
-
-let X = 0;
-
-
 
 const DevelopedBy = () =>{
   return <>
@@ -60,7 +57,7 @@ const loginClick = (username, password) =>{
   `);
 }
 
-const Login = () => {
+const Login = ({onLoginClick}) => {
   const [username, updateUsername] = useState('');
   const [password, updatePass] = useState('');
 
@@ -78,11 +75,21 @@ const Login = () => {
       <div className="login__login_title">Admin Login</div>
       <EnterUsername onChange={handleOnChangeUsername}/>
       <EnterPassword onChange={handleOnChangePassword}/>
-      <LoginButton onClick={() => loginClick(username, password)}/>
+      <LoginButton onClick={() => {
+        //loginClick(username, password);
+        onLoginClick();
+    }}/>
    </div>
 }
 
 export default function Home() {
+    
+  const [isLoggedIn, updateIsLoggedIn] = useState(false);
+  // TODO: On Login Click make sure you display a spinner as you are sending the login credentials to the server and you display
+  // the login when the token arrives or clear out the login field and show the dispaly button again as soon as the toke arrives
+  const onLoginClick = ()=>{
+    updateIsLoggedIn(!isLoggedIn);
+  }
 
   useEffect(()=>{
     let socket = new WebSocket("ws://localhost:12345");
@@ -107,8 +114,11 @@ export default function Home() {
 
   return <>
       <div className="root">
-        <Login />
-        <DevelopedBy />
+        {isLoggedIn ? 
+           <Admin /> : 
+          <Login onLoginClick={onLoginClick}/> 
+        }
+        <DevelopedBy/>
       </div>
     </>
 }

@@ -120,3 +120,33 @@
     line-height: 30px;
     background-color: #e0e0e0;
 }
+.page_buttons_wrapper{
+  font-family: 'Ubuntu', sans-serif ;
+  padding-top: 16px;
+  padding-left: 16px;
+
+}
+
+.page_button{
+
+  user-select :none;
+  cursor : pointer;
+  margin-bottom : 16px;
+  width : max-content;
+  padding : 8px;
+  font-family : sans-serif;
+  font-size : 16px;
+  border-radius : 8px;
+  font-weight : bold;
+box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+background: linear-gradient(145deg, #f0f0f0, #cacaca);
+box-shadow:  5px 5px 10px #797979,
+             -5px -5px 10px #ffffff;
+
+}
+
+.abc{
+  width : 100px;
+  height : 100px;
+  background-color: red ;
+}
