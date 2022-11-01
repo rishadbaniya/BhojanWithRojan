@@ -12,17 +12,6 @@
 using namespace rapidjson;
 using namespace std;
 
-typedef struct {
-    int month;
-    int year;
-    int day;
-} DOB;
-
-typedef struct {
-    string image_data;
-    string file_name;
-} Image;
-
 int sqlite_exec_callback(void* isUsernameTaken, int argc, char **argv, char **azColName){
    bool* isTaken = (bool*)isUsernameTaken;
 

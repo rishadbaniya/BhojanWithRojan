@@ -14,7 +14,6 @@ using namespace std;
 
 int sqlite_exec_callback(void* isUsernameTaken, int argc, char **argv, char **azColName){
    bool* isTaken = (bool*)isUsernameTaken;
-
    int i;
    for(i = 0; i < argc; i++){
        *isTaken = true;
@@ -62,7 +61,6 @@ class AddAdmin{
              string query = "SELECT username FROM TABLE_NAME WHERE username='USERNAME'";
              query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), ADMIN_TABLE);
              query.replace(query.find("USERNAME"), strlen("USERNAME"), username);
-         
              bool isUserNameTaken = false;
              sqlite3_exec(db, query.c_str(), sqlite_exec_callback, &isUserNameTaken, NULL);
              return isUserNameTaken;

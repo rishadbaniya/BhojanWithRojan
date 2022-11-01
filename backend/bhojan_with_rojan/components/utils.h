@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef _UTILS_H_
+#define _UTILS_H_
 // path of the database that stores all the stuff
 #include <iostream>
 
@@ -30,3 +31,5 @@ typedef struct {
     string image_data; // Base64 encoded string data
     string file_name; // Name of the file with extension
 } Image;
+
+#endif

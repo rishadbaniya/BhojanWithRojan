@@ -3,6 +3,9 @@
 #include "../libs/rapidjson/writer.h"
 #include "../libs/rapidjson/stringbuffer.h"
 #include "../components/AddAdmin.h"
+#include "../components/AdminLogin.h"
+
+
 #include <iostream>
 #include <sqlite3.h>
 
@@ -27,6 +30,15 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
     resp->setContentTypeCode(CT_TEXT_PLAIN);
 
     if(req->path() == ADMIN_LOGIN){
+        AdminLogin admin_login = AdminLogin(req->bodyData());
+        string login = admin_login.login();
+        if(login == "WRONG_USERNAME_OR_PASS"){
+            resp->setBody("WRONG_USERNAME_OR_PASS");
+        }else if(login == "DATABASE_ERROR_OCCURED"){
+            resp->setBody("DATABASE_ERROR_OCCURED");
+        }else{
+            resp->setBody(login);
+        }
     }else if(req->path() == ADD_ADMIN){
         AddAdmin add_admin = AddAdmin(req->bodyData());
         switch(add_admin.addToDatabase()){

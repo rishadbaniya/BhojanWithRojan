@@ -1,124 +1,195 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import {QWebChannel} from 'qwebchannel';
+import { QWebChannel } from "qwebchannel";
 import Admin from "./Admin";
-
-import {useState, useEffect} from 'react';
+import sha256 from "sha256";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useState, useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const DEVELOPERS = [
   "Rishad Baniya",
   "Anish Pradhan",
   "Kapil Adhikari",
-  "Rojan Gautam"
+  "Rojan Gautam",
 ];
 
-const DevelopedBy = () =>{
-  return <>
-    <div className="developed_by">
+const DevelopedBy = () => {
+  return (
+    <>
+      <div className="developed_by">
         <div className="developed_by__title">Developed By</div>
-        <hr className="developed_by__horizontal_division"/>
+        <hr className="developed_by__horizontal_division" />
         <div className="developed_by__developers">{DEVELOPERS[0]}</div>
         <div className="developed_by__developers">{DEVELOPERS[1]}</div>
         <div className="developed_by__developers">{DEVELOPERS[2]}</div>
         <div className="developed_by__developers">{DEVELOPERS[3]}</div>
-    </div>
+      </div>
     </>
-}
+  );
+};
 
 const EnterUsername = (props) => {
-   return <div className="enterusername_wrapper">
-        <input onChange={props.onChange} class="inputbox" placeholder="Enter your username"/>
-     </div>
-}
-
+  return (
+    <div className="enterusername_wrapper">
+      <input
+        onChange={props.onChange}
+        class="inputbox"
+        placeholder="Enter your username"
+      />
+    </div>
+  );
+};
 
 const EnterPassword = (props) => {
-   return <div className="enterpassword_wrapper">
-        <input onChange={props.onChange}className="inputbox" placeholder="Enter your password" />
-     </div>
-}
-
-const LoginButton = (props) => {
-   return <div className="loginbutton_wrapper">
-     <div onClick={props.onClick} className="login__login_button">Login</div>
+  return (
+    <div className="enterpassword_wrapper">
+      <input
+        onChange={props.onChange}
+        className="inputbox"
+        placeholder="Enter your password"
+      />
     </div>
+  );
+};
 
-}
+const LoginButton = ({ isLoginDisabled, onClick }) => {
+  return (
+    <div className="loginbutton_wrapper">
+      <div
+        onClick={!isLoginDisabled ? onClick : () => {}}
+        className="login__login_button"
+      >
+        {isLoginDisabled ? (
+          <LinearProgress
+            color="inherit"
+            style={{ height: "19px", width: "100%" }}
+          />
+        ) : (
+          "Login"
+        )}
+      </div>
+    </div>
+  );
+};
 
-// TODO : Implement the callback for the transport portion of the QOBject
-const loginClick = (username, password) =>{
+const Login = ({
+  onLoginClick,
+  updateUserNameAndPass,
+  currentState,
+  isLoginDisabled,
+}) => {
+  const onPasswordChange = (event) => {
+    updateUserNameAndPass({
+      ...currentState,
+      password: event.target.value,
+    });
+  };
 
-    // Sending the SHA-256 Hash of the password to the Qt Business Logic Section 
-  window.qt_object.sendLoginCredentials(`
-  {
-     "username" : ${username},
-     "password" : ${password}
-  }
-  `);
-}
+  const onUsernameChange = (event) => {
+    updateUserNameAndPass({
+      ...currentState,
+      username: event.target.value,
+    });
+  };
 
-const Login = ({onLoginClick}) => {
-  const [username, updateUsername] = useState('');
-  const [password, updatePass] = useState('');
-
-  const handleOnChangePassword = (event) => {
-    console.log(event.target.value);
-    updateUsername(event.target.value);
-  }
-
-  const handleOnChangeUsername = (event) => {
-    console.log(event.target.value);
-    updatePass(event.target.value);
-  }
-
-  return <div className="login">
+  return (
+    <div className="login">
       <div className="login__login_title">Admin Login</div>
-      <EnterUsername onChange={handleOnChangeUsername}/>
-      <EnterPassword onChange={handleOnChangePassword}/>
-      <LoginButton onClick={() => {
-        //loginClick(username, password);
-        onLoginClick();
-    }}/>
-   </div>
-}
+      <EnterUsername onChange={onUsernameChange} />
+      <EnterPassword onChange={onPasswordChange} />
+      <LoginButton onClick={onLoginClick} isLoginDisabled={isLoginDisabled} />
+    </div>
+  );
+};
 
 export default function Home() {
-    
-  const [isLoggedIn, updateIsLoggedIn] = useState(false);
-  // TODO: On Login Click make sure you display a spinner as you are sending the login credentials to the server and you display
-  // the login when the token arrives or clear out the login field and show the dispaly button again as soon as the toke arrives
-  const onLoginClick = ()=>{
-    updateIsLoggedIn(!isLoggedIn);
-  }
+  const [currentState, updateState] = useState({
+    isLoggedIn: false,
+    username: "",
+    password: "",
+  });
+  const [isSnackBarOpen, updateSnackbarState] = useState(false);
+  const [isLoginDisabled, updateIsLoginDisabled] = useState(false);
 
-  useEffect(()=>{
+  const handleClose = () => {
+    updateSnackbarState(!isSnackBarOpen);
+  };
+
+  const onLoginClick = () => {
+    updateIsLoginDisabled(true);
+    const loginCredentials = {
+      username: currentState.username.trim(),
+      password: sha256(currentState.password.trim()),
+    };
+    console.log(JSON.stringify(loginCredentials));
+    console.log(window.qt_object);
+    window.qt_object.sendLoginCredentials(JSON.stringify(loginCredentials));
+    window.qt_object.sendText.connect((data) => {
+      updateSnackbarState(true);
+      if (data === "A_TOKEN_OF_LOGIN_LOVE") {
+        updateState({
+          ...currentState,
+          isLoggedIn: true,
+        });
+      }
+      updateIsLoginDisabled(false);
+    });
+  };
+
+  useEffect(() => {
     let socket = new WebSocket("ws://localhost:12345");
     console.log("Came here");
     socket.onerror = () => {
-        console.log("Fuck");
-    }
+      console.log("Fuck");
+    };
 
     socket.onclose = () => {
-        console.log("Closed");
-    }
+      console.log("Closed");
+    };
 
     socket.onopen = () => {
       new QWebChannel(socket, (channel) => {
         console.log(channel);
         window.qt_object = channel.objects.qt_object;
         console.log("I OPENED");
-
       });
-    }
-  },[]);
+    };
+  }, []);
 
-  return <>
+  return (
+    <>
+      <Snackbar
+        open={isSnackBarOpen}
+        onClose={handleClose}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        {currentState.isLoggedIn ? (
+          <MuiAlert severity="success" variant="filled">
+            Logged in successfully!
+          </MuiAlert>
+        ) : (
+          <MuiAlert severity="error" variant="filled">
+            Logged in successfully!
+          </MuiAlert>
+        )}
+      </Snackbar>
+
       <div className="root">
-        {isLoggedIn ? 
-           <Admin /> : 
-          <Login onLoginClick={onLoginClick}/> 
-        }
-        <DevelopedBy/>
+        {currentState.isLoggedIn ? (
+          <>
+            <Admin />
+          </>
+        ) : (
+          <Login
+            onLoginClick={onLoginClick}
+            updateUserNameAndPass={updateState}
+            currentState={currentState}
+            isLoginDisabled={isLoginDisabled}
+          />
+        )}
+        <DevelopedBy />
       </div>
     </>
+  );
 }

@@ -25,6 +25,7 @@
   box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
   border-radius : 16px;
   background: #e0e0e0;
+  user-select: none;
 }
 
 
