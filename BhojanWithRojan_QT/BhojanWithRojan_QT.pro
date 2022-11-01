@@ -17,7 +17,10 @@ SOURCES += \
     mainwindow.cpp \
 
 HEADERS += \
+    core.h \
     mainwindow.h \
+    websocketclientwrapper.h \
+    websockettransport.h
 
 FORMS += \
     mainwindow.ui
