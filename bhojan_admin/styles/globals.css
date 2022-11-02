@@ -151,3 +151,57 @@ box-shadow:  5px 5px 10px #797979,
   height : 100px;
   background-color: red ;
 }
+
+
+.editAdmin__admin{
+  display : flex;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  width : 100%;
+  border-radius: 8px;
+  height : 40px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.editAdmin__admin_numbering{
+  font-weight: bold;
+  padding : 6px;
+  width : fit-content;
+  border-radius: 8px;
+  background-color : #E0E0E0;
+  margin: 5px;
+}
+
+.editAdmin__admin_full_name{
+  margin : 5px;
+  border-radius: 8px;
+  background-color : #E0E0E0;
+  padding-left: 8px;
+  padding-right: 16px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  width: fit-content;
+  font-size: 18px;
+}
+
+.editAdmin__admin_username{
+  margin : 5px;
+  border-radius: 8px;
+  background-color : #E0E0E0;
+  padding-left: 8px;
+  padding-right: 16px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  width: fit-content;
+  font-size: 18px;
+}
+
+.editAdmin_admin_full_name_numbering{
+  display : flex;
+}

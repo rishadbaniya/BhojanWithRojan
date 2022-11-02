@@ -25,6 +25,7 @@ int sqlite_exec_callback(void* isUsernameTaken, int argc, char **argv, char **az
 // JSON data to the fields below in the class
 class AddAdmin{
     public:
+        string full_name;
         string username;
         string email;
         string password;
@@ -34,9 +35,12 @@ class AddAdmin{
          
         AddAdmin(const char* req_json){
 
+            cout << req_json << endl;
+
              // Maps all the JSON data into the struct, simply put, it deserializes everything
              Document doc;
              doc.Parse(req_json); // NOTE : WRONG COMPILER ERROR FROM CCLS
+             this->full_name = doc["full_name"].GetString();
              this->username = doc["username"].GetString();
              this->email = doc["email"].GetString();
              this->password = doc["password"].GetString();
@@ -44,9 +48,9 @@ class AddAdmin{
              const Value& dob_data = doc["DOB"];
 
              DOB dob;
-             dob.day = dob_data["day"].GetInt();
-             dob.month = dob_data["month"].GetInt();
-             dob.year = dob_data["year"].GetInt();
+             dob.day = dob_data["day"].GetString();
+             dob.month = dob_data["month"].GetString();
+             dob.year = dob_data["year"].GetString();
              this->dob = dob;
 
              Image image;
@@ -74,24 +78,25 @@ class AddAdmin{
              //
              // If an admin with same username exists there on the database then one must respond with error to
              // the client
-         
+
              sqlite3* db;
              int isConnected = sqlite3_open(DB.c_str(), &db);
              if(isConnected == SQLITE_OK){
                  if(!isUsernameTaken(username.c_str(), db)){
                      cout << "The username was not taken" << endl;
-                     string query = "INSERT INTO TABLE_NAME VALUES ('USERNAME', 'EMAIL', 'PASSWORD', 'GENDER' ,'DOB', 'IMAGE_PATH')";
+                     string query = "INSERT INTO TABLE_NAME VALUES ('USERNAME', 'EMAIL', 'PASSWORD', 'GENDER' ,'DOB', 'IMAGE_PATH', 'TOKEN')";
                      query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), ADMIN_TABLE);
                      query.replace(query.find("USERNAME"), strlen("USERNAME"), username);
-                     query.replace(query.find("EMAIL"), strlen("EMAIL"), username);
-                     query.replace(query.find("PASSWORD"), strlen("PASSWORD"), username);
+                     query.replace(query.find("EMAIL"), strlen("EMAIL"), email);
+                     query.replace(query.find("PASSWORD"), strlen("PASSWORD"), password);
                      query.replace(query.find("GENDER"), strlen("GENDER"), gender);
-                     query.replace(query.find("DOB"), strlen("DOB"), gender);
+                     query.replace(query.find("DOB"), strlen("DOB"), "2002-19-20");
                      query.replace(query.find("IMAGE_PATH"), strlen("IMAGE_PATH"), gender);
+                     query.replace(query.find("TOKEN"), strlen("TOKEN"), "");
          
-                     //string query = "INSERT INTO " + ADMIN_TABLE + " VALUES (" + username + "," + email + "," + password + "," + gender + "," + "NULL" + "," + "NULL" ;
-                     sqlite3_exec(db, query.c_str(), NULL, 0, NULL);
-                     //cout << *abc << endl;
+                     char* abc[1000];
+                     sqlite3_exec(db, query.c_str(), NULL, 0, abc);
+                     cout << *abc << endl;
                      sqlite3_close(db);
                      return OK;
                  }else{
@@ -105,6 +110,12 @@ class AddAdmin{
                  return ERR_DATABASE_ERROR_OCCURED;
              }
          
+         }
+        
+         // Gets the base64 encoded string and name of the file, then creates the image file, returning the path of the file stored
+         // relative to the webserver that's running, so that it c
+         string createAndSaveBase64Image(string name, string image_base64){
+
          }
 };
 #endif

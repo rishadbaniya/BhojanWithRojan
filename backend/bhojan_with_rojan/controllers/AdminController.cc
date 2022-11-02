@@ -1,20 +1,15 @@
+#include <iostream>
+#include <sqlite3.h>
 #include "AdminController.h"
 #include "../libs/rapidjson/document.h"
 #include "../libs/rapidjson/writer.h"
 #include "../libs/rapidjson/stringbuffer.h"
 #include "../components/AddAdmin.h"
 #include "../components/AdminLogin.h"
-
-
-#include <iostream>
-#include <sqlite3.h>
-
-
 #include "../components/utils.h"
 
 using namespace std;
 
-// Admin URL Paths For Post Request
 const string ADMIN_LOGIN = "/admin_login";
 const string ADD_ADMIN = "/add_admin";
 const string EDIT_ADMIN = "/edit_admin";
@@ -30,6 +25,10 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
     resp->setContentTypeCode(CT_TEXT_PLAIN);
 
     if(req->path() == ADMIN_LOGIN){
+        // Possible replies from the endpoint /admin_login are :
+        // - "WRONG_USERNAME_OR_PASS"
+        // - "DATABASE_ERROR_OCCURED"
+        // - The token which implies that login was successful
         AdminLogin admin_login = AdminLogin(req->bodyData());
         string login = admin_login.login();
         if(login == "WRONG_USERNAME_OR_PASS"){
@@ -39,7 +38,12 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
         }else{
             resp->setBody(login);
         }
+
     }else if(req->path() == ADD_ADMIN){
+        // Possible replies from the endpoint /add_admin are :
+        // - "USERNAME_WAS_TAKEN"
+        // - "DATABASE_ERROR_OCCURED"
+        // - "OK", which implies the admin was added
         AddAdmin add_admin = AddAdmin(req->bodyData());
         switch(add_admin.addToDatabase()){
             case ERR_ADMIN_USERNAME_WAS_TAKEN : 

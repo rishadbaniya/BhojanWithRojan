@@ -1,17 +1,18 @@
 import {useState} from 'react';
-import styled from 'styled-components';
-import hash_256 from 'sha256';
-import ImageUploading from 'react-images-uploading';
-
 import {AddAdmin} from '../Components/add_admin/index'
+import {EditAdmin} from '../Components/edit_admin/index';
+import {EditStaff} from '../Components/edit_staff/index';
 
-const PageButtonClicked = (index) => {
+
+// token => The token used to make network request after a admin as logged in
+// username => The username fo the user that is logged in
+const PageButtonClicked = (index, token, username) => {
   switch(index) {
     case 0:
       return <AddAdmin/>;
       break;
     case 1:
-      return <__EditAdmin/>;
+      return <EditAdmin/>;
       break;
     case 2:
       return <__AddUser/>;
@@ -23,7 +24,7 @@ const PageButtonClicked = (index) => {
       return <__AddStaff/>;
       break;
     case 5:
-      return <__EditStaff/>;
+      return <EditStaff username={username} token={token}/>;
       break;
     case 6:
       return <__AddEditFood/>;
@@ -59,40 +60,40 @@ const __AddEditFood  = () => {
     </>
 }
 
-// By Defaul the Admin is gonna be presented with the Edit User i.e the index 3,
-// because we believe that most of the times, the Admin is ever going to login is in ordert to add balance to the Users
-const Admin = () => {
+// By Default the Admin is gonna be presented with the Edit User i.e the index 3,
+// because we believe that most of the times, the Admin is ever going to login is in order to add balance to the Users
+const Admin = ({token, username}) => {
   const [pageIndex, changePageIndex] = useState(3);
   return <>
       <div className="page_buttons_wrapper">
-        <PageButton index={0} currentIndex={pageIndex} onClick={() => changePageIndex(0)}>Add Admin</PageButton>
-        <PageButton index={1} currentIndex={pageIndex} onClick={() => changePageIndex(1)}>Edit Admin</PageButton>
+        {
+          username === "sudo" ?
+          <>
+            <PageButton index={0} currentIndex={pageIndex} onClick={() => changePageIndex(0)}>Add Admin</PageButton>
+            <PageButton index={1} currentIndex={pageIndex} onClick={() => changePageIndex(1)}>Edit Admin</PageButton>
+          </> : <></>
+        } 
         <PageButton index={2} currentIndex={pageIndex} onClick={() => changePageIndex(2)}>Add User</PageButton>
         <PageButton index={3} currentIndex={pageIndex} onClick={() => changePageIndex(3)}>Edit User</PageButton>
         <PageButton index={4} currentIndex={pageIndex} onClick={() => changePageIndex(4)}>Add Staff</PageButton>
         <PageButton index={5} currentIndex={pageIndex} onClick={() => changePageIndex(5)}>Edit Staff</PageButton>
         <PageButton index={6} currentIndex={pageIndex} onClick={() => changePageIndex(6)}>Add/Edit Food</PageButton>
       </div>
-    <div className="page_button_page_wrapper">{PageButtonClicked(pageIndex)}</div>
+    <div className="page_button_page_wrapper">{PageButtonClicked(pageIndex, token, username)}</div>
     </>
 };
 
 
 
-
-
-
-// TODO : Use Styled Component to manage theme 
-
 const PAGE_BUTTON = {
   INACTIVE : {
     "background" : "linear-gradient(145deg, #f0f0f0, #cacaca)",
-    "box-shadow" : "5px 5px 10px #797979, -5px -5px 10px #ffffff"
+    "boxShadow" : "5px 5px 10px #797979, -5px -5px 10px #ffffff"
   },
 
   ACTIVE : {
     "background" : "#e0e0e0",
-    "box-shadow" : "inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff",
+    "boxShadow" : "inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff",
    }
 }
 

@@ -22,9 +22,9 @@ const string USER_TABLE = "user";
 const string FOOD_TABLE = "food";
 
 typedef struct {
-    int month;
-    int year;
-    int day;
+    string month;
+    string year;
+    string day;
 } DOB;
 
 typedef struct {
