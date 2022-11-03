@@ -7,7 +7,7 @@ import sha256 from "sha256";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const FULL_NAME_PLACEHOLDER = "Enter your full name (Eg. Rishad Baniya)";
-const USERNAME_PLACEHOLDER = "Enter your full name (Eg. rishadbaniya)";
+const USERNAME_PLACEHOLDER = "Enter your username (Eg. rishadbaniya)";
 const EMAIL_PLACEHOLDER = "Enter your email (Eg. baniyarishad@gmail.com)";
 const PASSWORD_PLACEHOLDER = "Enter your password";
 const CONFIRM_PASSWORD_PLACEHOLDER = "Confirm your password";
@@ -167,7 +167,7 @@ export const AddAdmin = () => {
         message: validationMessage,
       });
     } else {
-      updateIsAdminBeingAdded(true);
+      
       if (images.length === 0) {
         updateSnackbarState({
           ...snackBarState,
@@ -175,11 +175,12 @@ export const AddAdmin = () => {
           message: "Please upload an image",
         });
       } else {
+        updateIsAdminBeingAdded(true);
         // All the validation step ends here and the logic for
         // sending the data to the server is written here
         let toSubmitState = {
           ...currentState,
-          image_data: images[0].data_url,
+          image_data: images[0].data_url.substring(images[0].data_url.indexOf(",") + 1),
           file_name: images[0].file.name,
           password: sha256(currentState.password.trim()),
         };

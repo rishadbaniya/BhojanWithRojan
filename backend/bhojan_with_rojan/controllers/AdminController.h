@@ -10,6 +10,8 @@ class AdminController : public drogon::HttpSimpleController<AdminController>{
     // list path definitions here;
     PATH_ADD("/admin_login", HttpMethod::Post);
     PATH_ADD("/add_admin", HttpMethod::Post);
+    PATH_ADD("/get_admins", HttpMethod::Post);
+
     PATH_ADD("/edit_admin", HttpMethod::Post);
     PATH_ADD("/add_user", HttpMethod::Post);
     PATH_ADD("/edit_user", HttpMethod::Post);

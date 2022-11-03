@@ -7,12 +7,14 @@
 #include "../components/AddAdmin.h"
 #include "../components/AdminLogin.h"
 #include "../components/utils.h"
+#include "../components/EditAdmin.h"
 
 using namespace std;
 
 const string ADMIN_LOGIN = "/admin_login";
 const string ADD_ADMIN = "/add_admin";
 const string EDIT_ADMIN = "/edit_admin";
+const string GET_ADMINS = "/get_admins";
 const string ADD_USER = "/add_user";
 const string EDIT_USER = "/edit_user";
 const string ADD_STAFF = "/add_staff";
@@ -23,7 +25,8 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
     auto resp= drogon::HttpResponse::newHttpResponse(); 
     resp->setStatusCode(k200OK);
     resp->setContentTypeCode(CT_TEXT_PLAIN);
-
+    
+    // /admin_login
     if(req->path() == ADMIN_LOGIN){
         // Possible replies from the endpoint /admin_login are :
         // - "WRONG_USERNAME_OR_PASS"
@@ -38,7 +41,8 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
         }else{
             resp->setBody(login);
         }
-
+    
+    // /add_admin
     }else if(req->path() == ADD_ADMIN){
         // Possible replies from the endpoint /add_admin are :
         // - "USERNAME_WAS_TAKEN"
@@ -56,6 +60,10 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
                 resp->setBody("OK");
                 break;
         }
+    // /get_admins
+    }else if(req->path() == GET_ADMINS){
+        cout << "CAME HERE" << endl;
+        resp->setBody(getAdmins());
     }else if(req->path() == EDIT_ADMIN){
         std::cout << "edit admin" << std::endl;
     }else if(req->path() == ADD_USER){

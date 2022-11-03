@@ -7,7 +7,11 @@
 #include "../libs/rapidjson/stringbuffer.h"
 #include <iostream>
 #include <sqlite3.h>
+#include <fstream>
+#include <string.h>
 #include "utils.h"
+#include "../libs/base64.h"
+#include "../libs/base64.cpp"
 
 using namespace rapidjson;
 using namespace std;
@@ -34,9 +38,6 @@ class AddAdmin{
         Image image;
          
         AddAdmin(const char* req_json){
-
-            cout << req_json << endl;
-
              // Maps all the JSON data into the struct, simply put, it deserializes everything
              Document doc;
              doc.Parse(req_json); // NOTE : WRONG COMPILER ERROR FROM CCLS
@@ -83,15 +84,22 @@ class AddAdmin{
              int isConnected = sqlite3_open(DB.c_str(), &db);
              if(isConnected == SQLITE_OK){
                  if(!isUsernameTaken(username.c_str(), db)){
-                     cout << "The username was not taken" << endl;
+                     string image_path = createAndSaveBase64Image(image.file_name, image.image_data, username);
+                     string _dob = "";
+                     _dob.append(dob.year);
+                     _dob.append("-");
+                     _dob.append(dob.month);
+                     _dob.append("-");
+                     _dob.append(dob.day);
+
                      string query = "INSERT INTO TABLE_NAME VALUES ('USERNAME', 'EMAIL', 'PASSWORD', 'GENDER' ,'DOB', 'IMAGE_PATH', 'TOKEN')";
                      query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), ADMIN_TABLE);
                      query.replace(query.find("USERNAME"), strlen("USERNAME"), username);
                      query.replace(query.find("EMAIL"), strlen("EMAIL"), email);
                      query.replace(query.find("PASSWORD"), strlen("PASSWORD"), password);
                      query.replace(query.find("GENDER"), strlen("GENDER"), gender);
-                     query.replace(query.find("DOB"), strlen("DOB"), "2002-19-20");
-                     query.replace(query.find("IMAGE_PATH"), strlen("IMAGE_PATH"), gender);
+                     query.replace(query.find("DOB"), strlen("DOB"), _dob);
+                     query.replace(query.find("IMAGE_PATH"), strlen("IMAGE_PATH"), image_path);
                      query.replace(query.find("TOKEN"), strlen("TOKEN"), "");
          
                      char* abc[1000];
@@ -109,13 +117,20 @@ class AddAdmin{
                  // Can't add to the database and returns false
                  return ERR_DATABASE_ERROR_OCCURED;
              }
-         
+        
          }
         
          // Gets the base64 encoded string and name of the file, then creates the image file, returning the path of the file stored
          // relative to the webserver that's running, so that it c
-         string createAndSaveBase64Image(string name, string image_base64){
-
+         string createAndSaveBase64Image(string name, string image_base64, string username){
+             string _path = name.substr(name.find('.'));
+             _path.insert(0, username);
+             ofstream file_stream;
+             file_stream.open(_path);
+             file_stream << base64_decode(image_base64);
+             file_stream.close();
+             return _path;
          }
 };
+
 #endif
