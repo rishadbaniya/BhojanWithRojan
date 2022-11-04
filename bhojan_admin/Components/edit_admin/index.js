@@ -1,15 +1,15 @@
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import {useState, useEffect} from "react";
-import CreateIcon from '@mui/icons-material/Create';
-import Dialog from '@mui/material/Dialog';
 import CircularProgress from '@mui/material/CircularProgress';
-import { DeleteForever } from '@mui/icons-material';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const getAdmins = (callBack) => {
     window.qt_object.getAdmins();
     window.qt_object.getAdminsResponse.connect((resp)=> {
+        console.log(resp);
         callBack(JSON.parse(resp));
     });
 
@@ -18,6 +18,7 @@ const getAdmins = (callBack) => {
 const deleteAdmin = (username, callBack) => {
     window.qt_object.deleteAdmin(username);
     window.qt_object.getDeleteAdminResponse.connect((resp)=> {
+        console.log(resp);
         callBack(resp);
     });
 }
@@ -47,8 +48,8 @@ export const EditAdmin = ({token}) => {
     }
 
     const onDeleteClick = (username) => {
-        updateAdmins([]);
         deleteAdmin(username, (rep) => {
+            console.log(rep);
             if(rep === "OK"){
                 updateSnackbarState({
                     isOpen : true,
@@ -58,12 +59,16 @@ export const EditAdmin = ({token}) => {
             }else{
                 updateSnackbarState({
                     isOpen : true,
-                    severity : "success",
+                    severity : "error",
                     message : `Err ${rep}`
                 })
             }
         });
-        getAdmins((admins) => updateAdmins(admins));
+        updateAdmins([]);
+        setTimeout(() => {
+            getAdmins((admins) => updateAdmins(admins));
+        }, 500);
+        
     }
 
     useEffect(() => {
@@ -78,9 +83,6 @@ export const EditAdmin = ({token}) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
       <MuiAlert severity={snackBarState.severity} variant="filled"> {snackBarState.message} </MuiAlert>
     </Snackbar>
-    <Dialog>
-
-    </Dialog>
    <div className="page_detail">
         <div className="page_detail_header">Edit Admins</div>
         {
@@ -104,9 +106,10 @@ const Admin = ({full_name, username, onEditClick, index, onDeleteClick}) => {
     <IconButton aria-label="upload picture" component="label" onClick={() => onEditClick(username)}>
         <CreateIcon />
       </IconButton>
-    <IconButton aria-label="upload picture" component="label" onClick={() => onDeleteClick(username)}>
-        <DeleteForever />
-      </IconButton>
+    { username === "sudo" ? <></> :
+    (<IconButton aria-label="upload picture" component="label" onClick={() => onDeleteClick(username)}>
+        <DeleteForeverIcon />
+      </IconButton>)  }
     </div>
     
    </div> 
