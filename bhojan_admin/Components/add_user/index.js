@@ -9,14 +9,17 @@ import LinearProgress from "@mui/material/LinearProgress";
 const FULL_NAME_PLACEHOLDER = "Enter user's full name (Eg. Rishad Baniya)";
 const ID_PLACEHOLDER = "Enter user's ID Number(Eg. 2569)";
 const PASSWORD_PLACEHOLDER = "Enter password for the user";
+const DEPARTMENT = "Enter department of the user";
 
 const validateState = (state) => {
   if (state.full_name === null) {
-    return "Full Name Field Is Empty";
-  } else if (state.id === null) {
-    return "ID Number field is empty";
+    return "Full Name Field  Empty";
+  } else if (state.id === null || state.id < 0) {
+    return "Enter a valid ID";
   } else if (state.password === null) {
     return "Enter a numeric password";
+  } else if (state.department === null) {
+    return "Enter a department for the user";
   } else if (state.gender === null) {
     return "Choose a gender";
   } else {
@@ -28,11 +31,12 @@ const EmptyState = {
     full_name: null,
     id: null,
     password: null,
+    department : null,
     gender: null,
     balance : 0,
 };
 
-export const AddUser = () => {
+export const AddUser = ({username}) => {
   const [snackBarState, updateSnackbarState] = useState({
     message: null,
     isOpen: false,
@@ -60,7 +64,7 @@ export const AddUser = () => {
   const onEnterIDChange = (event) => {
     updateState({
       ...currentState,
-      id : event.target.value,
+      id : parseInt(event.target.value),
     });
   };
 
@@ -68,7 +72,14 @@ export const AddUser = () => {
   const onEnterPasswordChange = (event) => {
     updateState({
       ...currentState,
-      password: event.target.value,
+      password: parseInt(event.target.value),
+    });
+  };
+
+  const onEnterDepartmentChange = (event) => {
+    updateState({
+      ...currentState,
+      department : event.target.value
     });
   };
 
@@ -82,7 +93,7 @@ export const AddUser = () => {
   const onBalanceChange = (e) => {
     updateState({
       ...currentState,
-      balance: e.target.value,
+      balance: parseInt(e.target.value) ? parseInt(e.target.value) : 0,
     });
   };
 
@@ -93,7 +104,6 @@ export const AddUser = () => {
 
   // To be called in order to submit the state to the server
   const onSubmit = () => {
-    console.log(window.qt_object);
     let validationMessage = validateState(currentState);
     if (validationMessage !== "OK") {
       updateSnackbarState({
@@ -117,16 +127,15 @@ export const AddUser = () => {
           ...currentState,
           image_data: images[0].data_url.substring(images[0].data_url.indexOf(",") + 1),
           file_name: images[0].file.name,
-          password: sha256(currentState.password.trim()),
+          password: sha256(`${currentState.password}`),
+          added_by : username
         };
-        
-        delete toSubmitState.confirm_password;
-        window.qt_object.addAdmin(JSON.stringify(toSubmitState));
-        window.qt_object.addAdminResponse.connect((data)=> {
+        window.qt_object.addUser(JSON.stringify(toSubmitState));
+        window.qt_object.addUserResponse.connect((data)=> {
           if(data === "OK"){
             updateSnackbarState({
               ...snackBarState,
-              message : "Admin was added successfully",
+              message : `User ${currentState.full_name} added successfully`,
               severity : "success",
               isOpen : true
             })
@@ -160,6 +169,7 @@ export const AddUser = () => {
         <input className="enter_full_name" placeholder={FULL_NAME_PLACEHOLDER} onChange={onEnterFullNameChange}/>
         <EnterID type="number" placeholder={ID_PLACEHOLDER} onChange={onEnterIDChange}/>
         <EnterPassword type="number" placeholder={PASSWORD_PLACEHOLDER} onChange={onEnterPasswordChange}/>
+        <input className="enter_department" placeholder={DEPARTMENT} onChange={onEnterDepartmentChange}/>
         <WrapperMaleFemaleWrapper>
           <MaleFemaleWrapper>
             <Gender

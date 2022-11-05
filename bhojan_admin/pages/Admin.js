@@ -17,7 +17,7 @@ const PageButtonClicked = (index, token, username) => {
       return <EditAdmin/>;
       break;
     case 2:
-      return <AddUser/>;
+      return <AddUser username={username}/>;
       break;
     case 3:
       return <__EditUser/>;

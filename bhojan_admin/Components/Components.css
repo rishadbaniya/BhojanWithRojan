@@ -77,3 +77,14 @@
   cursor: pointer;
   border-radius : 6px;
 }
+
+.enter_department{
+  margin-top: 16px;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius: 8px;
+  width: 40%;
+}
