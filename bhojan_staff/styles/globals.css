@@ -157,3 +157,248 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
 .login_button:hover{
   background-color: teal;
 }
+
+.user_info{
+  font-family: 'Ubuntu', sans-serif;
+  display: flex;
+  flex-direction: column;
+  width : 300px;
+  height : 200px;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  position: absolute;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  border-radius : 16px;
+  background: #e0e0e0;
+  user-select: none;
+  padding: 16px;
+}
+
+.user_info_full_name{
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.user_info_balance{
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.bill_and_pay{
+  font-family: 'Ubuntu', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width : 500px;
+  height : 650px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  position: absolute;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  border-radius : 16px;
+  background: #e0e0e0;
+  user-select: none;
+  padding: 16px;
+}
+
+.center_part{
+  font-family: 'Ubuntu', sans-serif;
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  top : 50%;
+  transform: translate(-58%, -50%);
+  width : 1200px;
+  height : 90vh;
+  z-index: 2;
+  position: absolute;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  border-radius : 16px;
+  background: #e0e0e0;
+  user-select: none;
+  padding: 16px;
+
+}
+
+.button_exit{
+  font-size: 22px;
+  text-transform: none !important;
+  border-radius: 16px;
+  flex : 1;
+  margin-right: 8px;
+}
+
+.button_pay{
+  font-size: 22px;
+  text-transform: none !important;
+  margin-left: 8px;
+  color : white;
+  border-radius: 16px;
+  flex : 1;
+}
+
+.button_exit_pay{
+  height: 50px;
+  display : flex;
+}
+
+.balance_detail{
+  line-height: 40px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.balance_detail_wrapper{
+  padding-bottom: 16px;
+}
+
+.bill_heading{
+  margin-bottom: 16px;
+  text-align: center;
+  width: 100%;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.total_amount{
+  font-weight: 600 !important;
+  font-size: 24px !important;
+}
+
+.bill_table{
+  display: flex;
+  flex-direction: row;
+  max-height: 330px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+
+.bill_table::-webkit-scrollbar{
+  display : none;
+}
+
+.bill_item, .bill_amount{
+  flex : 2
+}
+
+.bill_rate, .bill_quantity{
+  flex : 1
+}
+
+.bill_table_heading{
+  width: 100%;
+  min-height: 35px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.bill_table_member{
+  min-height: 35px;
+  text-align: center;
+  font-size: 22px;
+}
+
+.tab{
+  font-size: 18px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  text-transform: none !important;
+}
+
+.food_grid{
+  padding : 16px;
+  overflow-y : scroll;
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+
+
+.food_grid::-webkit-scrollbar{
+  display : none;
+}
+
+.food_card{
+  user-select: none;
+  -webkit-user-drag: none;
+  cursor: pointer;
+  margin-right: 16px;
+  margin-left: 16px;
+  margin-top: 32px;
+  display: inline-block;
+  width : 190px;
+  height : 250px;
+  border-radius: 16px;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+  position: relative;
+}
+
+
+.food_card_image_wrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.food_card_image{
+  margin-top: 10px;
+  border-radius: 50%;
+}
+
+.food_card_name, .food_card_price{
+  padding :14px;
+  padding-bottom: 0px;
+}
+
+.food_card_name{
+  width: 100%;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+}
+
+.food_card_price{
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+}
+
+.food_card_add{
+  z-index: 9;
+  background-color: green;
+  top: 0;
+  bottom: 0;
+  left : 0;
+  right : 50%;
+  opacity: 30%;
+  border-radius: 16px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color : white;
+  font-size: 80px;
+}
+
+.food_card_deduct{
+  z-index: 9;
+  background-color: red;
+  top: 0;
+  bottom: 0;
+  right : 0;
+  left : 50%;
+  opacity: 30%;
+  border-radius: 16px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80px;
+  color : white;
+}

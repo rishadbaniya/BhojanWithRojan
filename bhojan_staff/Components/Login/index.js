@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { CircularProgress } from "@mui/material";
+import sha256 from "sha256";
+import parseJson from "parse-json";
 
 // onLogin => Callback to be called after the user has successfully been authenticated
 const Login = ({onLogin}) => {
@@ -11,7 +13,7 @@ const Login = ({onLogin}) => {
     const [passwordState, updatePasswordState] = useState("");
     const [isIdFocused, updateIsIdFocused] = useState(true);
     const [isPasswordFocused, updateIsPasswordFocused] = useState(false);
-    const [isLoggingIn, updateIsLogggingIn] = useState(false);
+    const [isLoggingIn, updateIsLogging] = useState(false);
     const [snackBar, updateSnackBar] = useState({
         isOpen : false,
         severity : null,
@@ -32,23 +34,25 @@ const Login = ({onLogin}) => {
                 message : "Please Enter Your Password"
             });
         }else{
-            updateIsLogggingIn(true);
-            window.qt_object.userLogin(JSON.stringify({
-                id : idState,
-                password : passwordState
-            }));
-            console.log(window.qt_object);
+            updateIsLogging(true);
+            const sendState = {
+                id : parseInt(idState),
+                password : sha256(`${passwordState}`)
+            }
+            window.qt_object.userLogin(JSON.stringify(sendState));
+            console.log(sendState)
             window.qt_object.userLoginResponse.connect((d) => {
-                if(d.length === 64){
-
-                }else{
+                try{
+                    const resp = parseJson(d);
+                    onLogin(resp);
+                }catch{
                     updateSnackBar({
                         isOpen : true,
                         severity : "error",
                         message : "Err : " + d
                     });
-                    updateIsLogggingIn(false);
                 }
+                updateIsLogging(false)
             });
         }
     }

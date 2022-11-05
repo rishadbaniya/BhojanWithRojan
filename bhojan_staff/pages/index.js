@@ -3,12 +3,28 @@ import Image from 'next/image';
 import Login from '../Components/Login/index.js';
 import DevelopedBy from '../Components/DevelopedBy';
 import Logo from '../Components/Logo';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {QWebChannel} from 'qwebchannel';
+import User from '../Components/User/index.js';
 
 const QT_WEBSOCKET_ADDRESS = "ws://localhost:12345";
 
 export default function Home() {
+  const [userState, updateUserState] = useState({
+    isLoggedIn : false,
+    userData : null
+  });
+
+  const onLogin = (d) => {
+    updateUserState({
+      isLoggedIn : true,
+      userData : {
+        ...d
+
+      }
+    })
+  }
+
   useEffect(() => {
     let socket = new WebSocket(QT_WEBSOCKET_ADDRESS);
     socket.onerror = () => {
@@ -29,9 +45,17 @@ export default function Home() {
   return (
   <>
   <div className='root'>
-    <Logo/>
+    <Logo onLogin={onLogin} />
     <DevelopedBy />
-    <Login />
+    {!userState.isLoggedIn ? 
+        <Login onLogin={onLogin}/> : 
+        <User userData={userState.userData} onPayOrExit={() => {
+          updateUserState({
+            isLoggedIn : false,
+            userData : null
+          })
+        }}/>
+    }
   </div>
   
   </>)
