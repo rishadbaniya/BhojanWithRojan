@@ -152,6 +152,7 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
   background-color: teal;
   padding : 8px;
   color : white;
+  text-transform: none;
 }
 
 .login_button:hover{
@@ -401,4 +402,11 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
   align-items: center;
   font-size: 80px;
   color : white;
+}
+
+.transaction_history_button, .daily_usage_button, .transfer_balance_button{
+  border-radius: 16px;
+  margin-bottom: 8px;
+  text-transform: none;
+  font-size: 18px;
 }

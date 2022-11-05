@@ -44,6 +44,7 @@ const Login = ({onLogin}) => {
             window.qt_object.userLoginResponse.connect((d) => {
                 try{
                     const resp = parseJson(d);
+                    console.log(resp);
                     onLogin(resp);
                 }catch{
                     updateSnackBar({
@@ -92,14 +93,12 @@ const Login = ({onLogin}) => {
     </>
 }
 
+
+
 const _CircularProgress = () => {
     return <div style={{display : "flex", justifyContent : "center"}}>
             <CircularProgress />
         </div>
-}
-
-const _SnackBar_ = ({open, onClose, severity, message}) => {
-    
 }
 
 const LoginButton = ({onClick}) => {
@@ -111,10 +110,6 @@ const LoginButton = ({onClick}) => {
 
 const EnterID = () => {
     return <input placeholder="Enter your ID"/>
-
-}
-
-const EnterPassword = () => {
 
 }
 

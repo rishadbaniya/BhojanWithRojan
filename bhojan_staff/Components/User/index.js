@@ -62,7 +62,7 @@ const User = ({userData, onPayOrExit}) => {
             current_balance={userData.balance} 
             full_name={userData.full_name}
             department={userData.department} 
-            image_url={userData.image_url}
+            image_url={"http://172.22.107.47:8000/"+ userData.image_path}
             id={userData.id}
         />
         <BillAndPay 
