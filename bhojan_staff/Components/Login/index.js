@@ -44,8 +44,10 @@ const Login = ({onLogin}) => {
             window.qt_object.userLoginResponse.connect((d) => {
                 try{
                     const resp = parseJson(d);
-                    console.log(resp);
-                    onLogin(resp);
+                    onLogin({
+                        ...resp,
+                        id : parseInt(idState)
+                    });
                 }catch{
                     updateSnackBar({
                         isOpen : true,

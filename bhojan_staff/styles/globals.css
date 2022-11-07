@@ -163,8 +163,8 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
   font-family: 'Ubuntu', sans-serif;
   display: flex;
   flex-direction: column;
+  align-items: center;
   width : 300px;
-  height : 200px;
   top: 16px;
   left: 16px;
   z-index: 2;
@@ -402,11 +402,68 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
   align-items: center;
   font-size: 80px;
   color : white;
+  transition: all 200ms;
 }
 
-.transaction_history_button, .daily_usage_button, .transfer_balance_button{
+.food_card_deduct:hover{
+  opacity: 50%;
+}
+
+.food_card_add:hover{
+  opacity: 50%;
+}
+
+.transaction_history_button, .daily_usage_button, .transfer_balance_button, .change_password_button{
   border-radius: 16px;
   margin-bottom: 8px;
   text-transform: none;
   font-size: 18px;
+  width: 100%;
+}
+
+.user_info__image{
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+}
+
+.user_info__full_name{
+  padding-top: 16px;
+  padding-bottom: 8px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.user_info__department{
+  text-align: left;
+  font-size: 22px;
+  font-weight: bold;
+  padding-bottom: 16px;
+}
+
+.daily_usage_dialog{
+  align-items: end;
+  justify-content: end;
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+
+.close_button_wrapper{
+  width : 100%;
+  justify-content: center;
+  align-content: center;
+}
+
+.transfer_balance_dialog{
+  width: 100%;
+  height : 100%;
+  background-color : #E0E0E0;
+}
+
+.close_button_wrapper{
+  padding : 16px;
+  justify-content: end;
+  display: flex;
+  width: 100%;
 }

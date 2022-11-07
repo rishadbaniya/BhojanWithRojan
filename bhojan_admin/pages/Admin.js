@@ -4,6 +4,7 @@ import { EditAdmin } from '../Components/edit_admin/index';
 import { EditStaff } from '../Components/edit_staff/index';
 import { AddStaff } from '../Components/add_staff';
 import { AddUser } from '../Components/add_user';
+import AddEditFood from '../Components/add_edit_food';
 
 
 // token => The token used to make network request after a admin as logged in
@@ -20,8 +21,8 @@ const PageButtonClicked = (index, token, username) => {
       return <AddUser username={username}/>;
       break;
     case 3:
-      return <__EditUser/>;
-      break;
+      return <></>;
+      break
     case 4:
       return <AddStaff/>;
       break;
@@ -29,38 +30,13 @@ const PageButtonClicked = (index, token, username) => {
       return <EditStaff username={username} token={token}/>;
       break;
     case 6:
-      return <__AddEditFood/>;
+      return <AddEditFood />;
       break;
     default : 
       return <h1>Help me god</h1>;
   }
 }
 
-const __EditAdmin = () => {
-  return <>
-    </>
-}
-
-const __AddUser  = () => {
-  return <>
-    </>
-}
-const __EditUser  = () => {
-  return <>
-    </>
-}
-const __AddStaff  = () => {
-  return <>
-    </>
-}
-const __EditStaff  = () => {
-  return <>
-    </>
-}
-const __AddEditFood  = () => {
-  return <>
-    </>
-}
 
 // By Default the Admin is gonna be presented with the Edit User i.e the index 3,
 // because we believe that most of the times, the Admin is ever going to login is in order to add balance to the Users

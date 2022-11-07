@@ -88,3 +88,107 @@
   border-radius: 8px;
   width: 40%;
 }
+
+
+.add_food_category{
+  margin-top: 16px;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius: 8px;
+  width: 50%;
+}
+
+
+.add_food_category_button{
+  border-radius: 16px !important;
+  font-size: 16px !important;
+  margin-left: 16px !important;
+  text-transform: none !important;
+}
+
+.edit_food_categories{
+  margin-top: 16px !important;
+  width: fit-content;
+  border-radius: 16px !important;
+  font-size: 16px !important;
+  text-transform: none !important;
+}
+
+.food_categories_tab{
+  width: 100%;
+  height: 100%;
+  padding-top: 16px;
+}
+
+.food_category_tab{
+  font-size: 16px !important;
+  text-transform: none !important;
+}
+
+.add_food{
+  text-transform: none !important;
+  font-size: 16px !important;
+}
+
+.add_food_dialog{
+  width : 600px;
+  height : 500px;
+  background-color : #E0E0E0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.add_food_name{
+  height: 50px;
+  margin-top : 16px;
+  border: 0;
+  outline: 0;
+  font-size : 16px;
+  line-height: 40px;
+  padding-left: 8px;
+  border-radius : 8px;
+  width : 100%;
+}
+
+.save_food_button{
+  font-size: 16px;
+  text-transform: none !important;
+  border-radius: 16px !important;
+}
+
+.tab_food_items{
+
+}
+
+.food_card_image{
+  height : 120px;
+  width : 120px;
+  border-radius: 50%;
+}
+
+.food_card{
+  max-width: 150px;
+  margin-top: 16px;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  display: inline-block;
+  width : fit-content;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
+}
+
+.food_name, .food_rate{
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}

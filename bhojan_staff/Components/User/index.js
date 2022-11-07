@@ -1,13 +1,15 @@
-import Image from 'next/image';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import UserInfo from "./UserInfo";
 import BillAndPay from './BIllAndPay';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import FoodImage from '../../assets/download.jpeg';
 
 const User = ({userData, onPayOrExit}) => {
+    const {department, full_name, id, image_path, token} = userData;
+    const [balance, updateBalance] = useState(parseInt(userData.balance));
+
+    console.log(userData);
     const [itemsSelected, updateItemsSelected] = useState([]);
 
     // food parameter is a JS object of three keys 
@@ -59,14 +61,15 @@ const User = ({userData, onPayOrExit}) => {
     return <>
     <div>
         <UserInfo 
-            current_balance={userData.balance} 
-            full_name={userData.full_name}
-            department={userData.department} 
-            image_url={"http://172.22.107.47:8000/"+ userData.image_path}
-            id={userData.id}
+            id ={id}    
+            full_name={full_name}
+            department={department}
+            image_url={"http://172.25.103.161:8000/"+ userData.image_path}
+            balance={balance}
+            balanceUpdateCallback={updateBalance}
         />
         <BillAndPay 
-            currentBalance={1000} 
+            currentBalance={balance} 
             itemsSelected={itemsSelected} 
             onPayClick={() => {}} 
             onExitClick={onPayOrExit}
@@ -76,26 +79,63 @@ const User = ({userData, onPayOrExit}) => {
     </>
 }
 
-const Foods = ({onItemClick}) => {
-   const [currentTab, updateTab] = useState(0);
-   const handleTabChange = (_, v) => {
-    updateTab(v);
+const getFoodCategories = (onLoad) => {
+    window.qt_object.getFoodCategories("");
+    window.qt_object.getFoodCategoriesResponse.connect((d) => {
+        try{
+            onLoad(JSON.parse(d));
+        }catch{
+            onLoad([]);
+        }
+    });
+}
 
+const getFoods = (category, onLoad) => {
+    window.qt_object.getUserFoods(category);
+    window.qt_object.getUserFoodsResponse.connect((d) => {
+        try{
+            onLoad(JSON.parse(d));
+        }catch{
+            onLoad([]);
+        }
+    });
+
+}
+const Foods = ({onItemClick}) => {
+   const [foodCategories, updateFoodCategories] = useState([]);
+   const [currentFoods, updateFoods] = useState([]);
+   const [currentTab, updateTab] = useState(0);
+
+   const handleTabChange = (_, v) => {
+        updateTab(v);
+        getFoods((foodCategories[v]).category, (__resp)=> updateFoods(__resp));
    }
+
+   useEffect(() => {
+        getFoodCategories((resp) => {
+            updateFoodCategories(resp);
+            if(resp.length !== 0){
+                getFoods((resp[0]).category, (__resp)=> updateFoods(__resp));
+            }
+            
+        });
+   },[]);
 
    return <div className="center_part">
         <Box style={{width : "100%"}}>
             <Tabs value={currentTab} onChange={handleTabChange} variant="fullWidth">
-                <Tab className="tab" label="Drink"/>
-                <Tab className="tab" label="Breakfast" />
-                <Tab className="tab" label="Lunch" />
-                <Tab className="tab" label="Snacks" />
-                <Tab className="tab" label="Dinner" />
+                { foodCategories.map((d ,i) => {
+                        return <Tab className="tab" label={d.category} key={i}/>
+                    })
+                }
             </Tabs> 
         </Box>
         <div className='food_grid'>
-            <FoodCard food_name={"Samosa"} value={20} image_url={"/"} onClick={onItemClick} />
-            <FoodCard food_name={"Momo"} value={40} image_url={"/"} onClick={onItemClick} />
+            {
+                currentFoods.map((d, i) => {
+                    return <FoodCard key={i} food_name={d.food_name} value={d.rate} image_url={`http://172.25.105.94:8000/${d.image_path}`} onClick={onItemClick} />
+                })
+            }
         </div>
    </div> 
 }
@@ -123,7 +163,7 @@ const FoodCard = ({onClick, food_name, value, image_url}) => {
             <div className="food_card_deduct" onClick={() => {_onClick(-1)}}>
                 <div>-</div>
                 </div></> : <></>}
-            <Image height={130} width={130} className='food_card_image' alt="" src={FoodImage}/>
+            <img height={130} width={130} className='food_card_image' alt="" src={image_url}/>
         </div>
         <div className="food_card_name">{food_name}</div>
         <div className="food_card_price">Rs {value}</div>
