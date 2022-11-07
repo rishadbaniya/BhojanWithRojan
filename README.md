@@ -5,6 +5,7 @@
 ## Project Members:
 - [Rishad Baniya](https://github.com/rishadbaniya)
 - [Rojan Gautam](https://github.com/this-iskamal)
+- [Kapil Adhikari](https://github.com/adhikarikapil)
 
 
 ## Backend
