@@ -23,6 +23,7 @@ const string ADMIN_TABLE = "admin";
 const string STAFF_TABLE = "staff";
 const string USER_TABLE = "user";
 const string FOOD_TABLE = "food";
+const string QUEUE_TABLE = "queue";
 const string FOOD_CATEGORIES_TABLE = "food_categories";
 
 typedef struct {

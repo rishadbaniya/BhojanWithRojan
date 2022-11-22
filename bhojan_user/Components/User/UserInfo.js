@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { CircularProgress, Dialog, IconButton, Snackbar} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
@@ -10,7 +10,7 @@ import MuiAlert from "@mui/material/Alert";
 import { NumberPad } from '../Login/NumberPad';
 import sha256 from 'sha256';
 
-const BACKEND_ADDRESS = "http://172.25.103.161:8000"
+const BACKEND_ADDRESS = "http://192.168.43.80:8000";
 
 const Transition = React.forwardRef(function Transition( props , ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -45,7 +45,7 @@ const UserInfo = ({full_name, department, image_url, id, balance, balanceUpdateC
         <img className="user_info__image" src={image_url}/>
         <div className="user_info__full_name">Name : {full_name}</div>
         <div className="user_info__department">Department : {department}</div>
-        <DailyUsageDialog open={dailyUsageDialogState} onClose={closeAllDialog}/> 
+        <DailyUsageDialog open={dailyUsageDialogState} onClose={closeAllDialog} id={id}/> 
         <TransactionHistoryDialog open={transactionDialogState} onClose={closeAllDialog} file_name={TRANSACTION_HISTORY_PDF_NAME}/>
         <TransferBalanceDialog open={transferBalanceDialogState} onClose={updateBalance} own_id={id} balance={balance}/>
         <ChangePasswordDialog open={changePasswordDialogState} onClose={closeAllDialog} id={id} />
@@ -60,9 +60,7 @@ const TransactionHistoryDialog = ({open, onClose, url, file_name}) => {
     const PDF_LOCATION = BACKEND_ADDRESS + "/" + file_name;
     return <Dialog 
                 open={open}
-                onClose={onClose}
-                
-                >
+                onClose={onClose}>
         <div style={{height : "450px", width : "500px", display : "flex", justifyContent: "center", alignItems : "center"}}>
             <div>
                 <QRCode size={300} value={PDF_LOCATION} />
@@ -71,42 +69,92 @@ const TransactionHistoryDialog = ({open, onClose, url, file_name}) => {
         <div style={{display : "flex", justifyContent: "center", paddingBottom : "16px", fontSize : "22px"}}>Scan And Download Your Transaction History</div>
     </Dialog>
 }
+function toMonthName(monthNumber) {
+    const date = new Date();
+    date.setMonth(monthNumber);
+  
+    return date.toLocaleString('en-US', {
+      month: 'short',
+    });
+}
 
-const DailyUsageDialog = ({open, onClose}) => {
+const DailyUsageDialog = ({open, onClose, id}) => {
+    const [chartData, updateChartData] = useState([]);
+    useEffect(() => {
+        window.qt_object.getDailyUsage(`${id}`);
+        window.qt_object.getDailyUsageResponse.connect((data)=>{
+            data = `[${data}]`;
+            data = JSON.parse(data);
+            data = data.filter((d) => d.transaction === "BUY");
+            console.log(data);
+            let sortedData = new Array();
+            data.map((__d, i) => {
+                let totalSpent = 0;
+                console.log(__d.date);
+                let bill = JSON.parse(__d.bill);
+                bill.map((billD) => {
+                    totalSpent += billD.rate * billD.quantity;
+                });
+
+                data.map((___d, _i)=>{
+                    if(i !== _i && __d.time === ___d.time ){
+                        let _bill = JSON.parse(___d.bill);
+                        _bill.map((_billD) => {
+                            totalSpent += _billD.rate * _billD.quantity;
+                        });
+                    }
+                });
+
+                const date = new Date(0);
+                date.setUTCSeconds(parseInt(__d.date));
+                date = `${toMonthName(date.getMonth())}/${date.getDate()}`
+
+                sortedData.push({
+                    name : date,
+                    AmountSpent : totalSpent
+                },
+                );
+            });
+
+            // Bubble sort the array of date from small to big
+            for(var i = 0; i < sortedData.length; i++){
+                for(var j = 0; j < sortedData.length - 1; j++){
+                    if(sortedData[j] > sortedData[j + 1]){
+                        let temp = sortedData[j];
+                        sortedData[j] = sortedData[j+1];
+                        sortedData[j + 1] = temp;
+                    }
+                }
+
+            }
+
+            sortedData = sortedData.map((item, pos) =>{
+                return JSON.stringify(item);
+            });
+
+            sortedData = sortedData.filter((item, pos) =>{
+                return sortedData.indexOf(item) === pos;
+            });
+
+            sortedData = sortedData.map((item, pos) =>{
+                return JSON.parse(item);
+            });
+
+            updateChartData(sortedData);
+        });
+        
+    }, []);
     return <>
     <Dialog 
         open={open} 
         onClose={onClose} 
         fullScreen 
         TransitionComponent={Transition}>
-
         <div className="daily_usage_dialog">
             <div className="close_button_wrapper">
                 <Button variant="contained" color="error" onClick={onClose}>Close</Button>
             </div>
-            <LineChart style={{margin: "auto"}} width={1900} height={800} data={[
-                    {
-                        name : "Nov 1", AmountSpent : 0,
-
-                    },
-                    {
-                        name : "Nov 2", AmountSpent : 0,
-                    },
-                    {
-                        name : "Nov 3", AmountSpent : 200,
-
-                    },
-                    {
-                        name : "Nov 4", AmountSpent : 80,
-                    },
-                    {
-                        name : "Nov 5", AmountSpent : 0,
-
-                    },
-                    {
-                        name : "Nov 6", AmountSpent : 50,
-                    }
-            ]}>
+            <LineChart style={{margin: "auto"}} width={1900} height={800} data={chartData}>
             <YAxis />
             <XAxis dataKey="name" />
                 <Tooltip />

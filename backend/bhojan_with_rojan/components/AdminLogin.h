@@ -7,7 +7,6 @@
 //      "password" : "4a09ee55f13f0b861f343fbcecdf0f9c54afece0c28ed570b05d109cdca9cb2a"
 // }"
 
-#pragma once
 #ifndef _ADMINLOGIN_H_
 #define _ADMINLOGIN_H_
 #include <chrono>

@@ -26,6 +26,13 @@
   margin : auto;
   width : 65vw;
   padding-top: 120px;
+  padding-bottom: 120px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.all_foods::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
 
 .order_wrapper{
@@ -48,6 +55,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.bill{
+  padding: 20px;
+  font-size: 32px;
 }
 
 

@@ -146,17 +146,17 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
 }
 
 .login_button{
-  width : 100%;
-  border : none;
+  width : 100% !important;
+  border : none !important;
   border-radius: 16px !important;
-  background-color: teal;
-  padding : 8px;
-  color : white;
-  text-transform: none;
+  background-color: teal !important;
+  padding : 8px !important;
+  color : white !important;
+  text-transform: none !important;
 }
 
 .login_button:hover{
-  background-color: teal;
+  background-color: teal !important;
 }
 
 .user_info{
@@ -224,20 +224,20 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
 }
 
 .button_exit{
-  font-size: 22px;
+  font-size: 22px !important;
   text-transform: none !important;
-  border-radius: 16px;
-  flex : 1;
-  margin-right: 8px;
+  border-radius: 16px !important;
+  flex : 1 !important;
+  margin-right: 8px !important;
 }
 
 .button_pay{
-  font-size: 22px;
+  font-size: 22px !important;
   text-transform: none !important;
-  margin-left: 8px;
-  color : white;
-  border-radius: 16px;
-  flex : 1;
+  margin-left: 8px !important;
+  color : white !important;
+  border-radius: 16px !important;
+  flex : 1 !important;
 }
 
 .button_exit_pay{
@@ -414,11 +414,11 @@ box-shadow: inset 5px 5px 10px #9f9f9f,
 }
 
 .transaction_history_button, .daily_usage_button, .transfer_balance_button, .change_password_button{
-  border-radius: 16px;
-  margin-bottom: 8px;
-  text-transform: none;
-  font-size: 18px;
-  width: 100%;
+  border-radius: 16px !important;
+  margin-bottom: 8px !important;
+  text-transform: none !important;
+  font-size: 18px !important;
+  width: 100% !important;
 }
 
 .user_info__image{

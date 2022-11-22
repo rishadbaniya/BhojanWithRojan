@@ -2,7 +2,6 @@
 #ifndef _EDITADMIN_H_
 #define _EDITADMIN_H_
 
-
 #include "../libs/rapidjson/writer.h"
 #include "../libs/rapidjson/stringbuffer.h"
 #include <iostream>

@@ -82,7 +82,7 @@ const User = ({userData, onPayOrExit}) => {
             id ={id}    
             full_name={full_name}
             department={department}
-            image_url={"http://172.20.150.212:8000/"+ userData.image_path}
+            image_url={"http://192.168.43.80:8000/"+ userData.image_path}
             balance={balance}
             balanceUpdateCallback={updateBalance}
         />

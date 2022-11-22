@@ -12,7 +12,6 @@
 using namespace std;
 using namespace rapidjson;
 
-const string QUEUE_TABLE = "queue";
 class UserPay{
     private :
         string req;

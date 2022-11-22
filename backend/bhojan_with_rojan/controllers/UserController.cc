@@ -10,6 +10,7 @@
 #include "../components/TransferBalance.h"
 #include "../components/ChangePassword.h"
 #include "../components/UserPay.h"
+#include "../components/DailyUsage.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -17,7 +18,6 @@ using namespace rapidjson;
 const string USER_LOGIN = "/user_login"; // Used to authenticate user for log in ✅
 const string CHANGE_PASSWORD = "/change_password"; // Used to change the password of the user 
 const string GET_USER_INFO = "/user_info"; // Used to get the metadata about the user, in order to see the balance, see photo, see name et
-
 const string GET_FOOD_CATEGORY = "/get_food_categories";// ✅
 const string GET_FOODS= "/get_user_foods";// ✅  
 const string TRANSFER_BALANCE = "/transfer_balance";
@@ -52,6 +52,10 @@ void UserController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::func
     }else if(req->path() == CHANGE_PASSWORD){
         ChangePassword change_password = ChangePassword(req->bodyData());
         resp->setBody(change_password.change());
+    }else if(req->path() == GET_DAILY_USAGE){
+        DailyUsage daily_usage = DailyUsage(req->bodyData());
+        cout << "GOT HERE TOO " << endl;
+        resp->setBody(daily_usage.getTransactionHistory());
     }else if(req->path() == PAY_FOOD){
         UserPay userpay = UserPay(req->bodyData());
         resp->setBody(userpay.addToQueue());
