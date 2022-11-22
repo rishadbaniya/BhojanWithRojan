@@ -21,28 +21,33 @@
 }
 
 .all_foods{
+  height: 100vh;
+  overflow-y: scroll;
   margin : auto;
   width : 65vw;
-
+  padding-top: 120px;
 }
 
-.drink{
+.order_wrapper{
+  display: inline-block;
+  padding-top: 28px;
+}
+.order{
+  background-color: #e0e0e0;
+  box-shadow:  5px 5px 10px #797979, -5px -5px 10px #ffffff;
   border-radius: 28px;
-background: #f0f0f0;
-
   width : 200px;
   height : 272px;
   position : relative;
   top : 24px;
   margin-left : 24px;
   bottom : 24px;
-}
-
-
-.__drinks{
-display : flex;
-height : 100%;
-overflow-x : hidden;
+  padding : 16px;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 

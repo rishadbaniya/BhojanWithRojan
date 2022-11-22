@@ -4,10 +4,24 @@ import BillAndPay from './BIllAndPay';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const User = ({userData, onPayOrExit}) => {
     const {department, full_name, id, image_path, token} = userData;
     const [balance, updateBalance] = useState(parseInt(userData.balance));
+    const [snackBarState, updateSnackBarState]  = useState({
+        isOpen : false,
+        severity : "",
+        message : ""
+    });
+
+    const onSnackClose = () => {
+        updateSnackBarState({
+            ...snackBarState,
+            isOpen : false
+        });
+    }
 
     console.log(userData);
     const [itemsSelected, updateItemsSelected] = useState([]);
@@ -59,19 +73,44 @@ const User = ({userData, onPayOrExit}) => {
 
     console.log({userData});
     return <>
+
+    <Snackbar open={snackBarState.isOpen} onClose={onSnackClose} autoHideDuration={4000} anchorOrigin={{ vertical: "bottom", horizontal: "left" }} >
+          <MuiAlert severity={snackBarState.severity} variant="filled">{snackBarState.message}</MuiAlert>
+     </Snackbar>
     <div>
         <UserInfo 
             id ={id}    
             full_name={full_name}
             department={department}
-            image_url={"http://172.25.103.161:8000/"+ userData.image_path}
+            image_url={"http://172.20.150.212:8000/"+ userData.image_path}
             balance={balance}
             balanceUpdateCallback={updateBalance}
         />
         <BillAndPay 
             currentBalance={balance} 
             itemsSelected={itemsSelected} 
-            onPayClick={() => {}} 
+            onPayClick={() => {
+                if(itemsSelected.length === 0){
+                    updateSnackBarState({
+                        isOpen : true,
+                        severity : "error",
+                        message : "You didn't select any food"
+                    });
+                }else{
+                    window.qt_object.payFood(id + JSON.stringify(itemsSelected));
+                    window.qt_object.payFoodResponse.connect((resp)=>{
+                        if(resp === "OK"){
+                            onPayOrExit();
+                        }else{
+                            updateSnackBarState({
+                                isOpen : true,
+                                severity : "error",
+                                message : resp
+                            })
+                        }
+                    })
+                }
+            }} 
             onExitClick={onPayOrExit}
         />
         <Foods onItemClick={onItemClick}/>
@@ -133,7 +172,7 @@ const Foods = ({onItemClick}) => {
         <div className='food_grid'>
             {
                 currentFoods.map((d, i) => {
-                    return <FoodCard key={i} food_name={d.food_name} value={d.rate} image_url={`http://172.25.105.94:8000/${d.image_path}`} onClick={onItemClick} />
+                    return <FoodCard key={i} food_name={d.food_name} value={d.rate} image_url={`http://172.20.150.212:8000/${d.image_path}`} onClick={onItemClick} />
                 })
             }
         </div>

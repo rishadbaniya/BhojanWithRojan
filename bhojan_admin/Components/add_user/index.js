@@ -197,7 +197,7 @@ export const AddUser = ({username}) => {
           onChange={onChange}
           maxNumber={10}
           dataURLKey="data_url"
-          acceptType={["jpg", "png"]}
+          acceptType={["jpg", "png", "jpeg"]}
         >
           {({
             imageList,

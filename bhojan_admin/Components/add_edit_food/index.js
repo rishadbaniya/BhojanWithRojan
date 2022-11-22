@@ -138,7 +138,7 @@ const AddEditFood = () => {
                 <div className="tab_food_items">
                     {allFoods.map((d, i) => {
                         return <FoodCard key={i} 
-                                         image_src={`http://172.25.105.94:8000/${d.image_path}`}
+                                         image_src={`http://172.25.105.89:8000/${d.image_path}`}
                                          food_name={d.food_name}
                                          rate={d.rate}>
                                         {JSON.stringify(d)}
