@@ -1,4 +1,4 @@
-# BhojanWithRojan - Just another Canteen Management System
+# BhojanWithRojan - A killshot to Canteeen Management Systems
 
 <img src="https://user-images.githubusercontent.com/54678051/196235289-0b9ac354-d8bc-4f54-9101-2a789817359c.png" width="200" height="200">
 
