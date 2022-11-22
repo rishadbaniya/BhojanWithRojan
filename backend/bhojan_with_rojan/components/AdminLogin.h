@@ -38,7 +38,6 @@ string get_epoch_time(){
     long long int a = second.count();
     return to_string(a);
 }
-
 // A datastructure to handle everything related to login
 class AdminLogin{
     public:

@@ -8,10 +8,10 @@
 #include <iostream>
 #include <sqlite3.h>
 #include <fstream>
+#include <filesystem>
 #include <string.h>
 #include "utils.h"
 #include "../libs/base64.h"
-#include "../libs/base64.cpp"
 
 using namespace rapidjson;
 using namespace std;
@@ -123,8 +123,11 @@ class AddAdmin{
          // Gets the base64 encoded string and name of the file, then creates the image file, returning the path of the file stored
          // relative to the webserver that's running, so that it c
          string createAndSaveBase64Image(string name, string image_base64, string username){
+             // The path fo the admin image that should be in is 
+             // "./admin_pics/username.jpg"
              string _path = name.substr(name.find('.'));
              _path.insert(0, username);
+             _path.insert(0, "admin_");
              ofstream file_stream;
              file_stream.open(_path);
              file_stream << base64_decode(image_base64);

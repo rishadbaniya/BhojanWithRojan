@@ -1,8 +1,11 @@
 #pragma once
+
 #ifndef _UTILS_H_
 #define _UTILS_H_
 // path of the database that stores all the stuff
 #include <iostream>
+#include <chrono>
+#include <time.h>
 
 using namespace std;
 
@@ -20,6 +23,7 @@ const string ADMIN_TABLE = "admin";
 const string STAFF_TABLE = "staff";
 const string USER_TABLE = "user";
 const string FOOD_TABLE = "food";
+const string FOOD_CATEGORIES_TABLE = "food_categories";
 
 typedef struct {
     string month;
@@ -31,5 +35,6 @@ typedef struct {
     string image_data; // Base64 encoded string data
     string file_name; // Name of the file with extension
 } Image;
+
 
 #endif

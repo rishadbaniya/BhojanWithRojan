@@ -4,12 +4,6 @@
 #include "../libs/rapidjson/document.h"
 #include "../libs/rapidjson/writer.h"
 #include "../libs/rapidjson/stringbuffer.h"
-#include "../components/AddAdmin.h"
-#include "../components/AdminLogin.h"
-#include "../components/utils.h"
-#include "../components/EditAdmin.h"
-#include "../components/AddUser.h"
-#include "../components/AddEditFood.h"
 
 using namespace std;
 
