@@ -91,7 +91,6 @@ const AddEditFood = () => {
                     updateTab(0);
                 });
                 getFoods(food_categories[currentTab].category ,(d) => {updateAllFoods(d)});
-
             });
         }else{
             updateSnackbarState({
@@ -101,8 +100,25 @@ const AddEditFood = () => {
                 message : "No Category left to delete!"
             });
         }
+    }
+
+    const deleteFood = (food_name) => {
+        const table_name = food_categories[currentTab].table_name;
+        window.qt_object.deleteFood(`${food_name},${table_name}`);
+        let foodsList = [...allFoods];
+        foodsList = foodsList.filter((d) => d.food_name !== food_name);
         
-        
+        window.qt_object.deleteFoodResponse.connect((resp) => {
+            if(resp === "OK"){
+                updateSnackbarState({
+                    ...snackBarState,
+                    isOpen : true,
+                    severity : "success",
+                    message :`The Food ${food_name} was deleted successfully` 
+                });
+                updateAllFoods(foodsList);
+            }
+        });
     }
 
     useEffect(()=>{
@@ -114,7 +130,6 @@ const AddEditFood = () => {
                     });
                 }
             });
-            
     },[]);
 
     return <>
@@ -138,10 +153,10 @@ const AddEditFood = () => {
                 <div className="tab_food_items">
                     {allFoods.map((d, i) => {
                         return <FoodCard key={i} 
-                                         image_src={`http://172.25.105.89:8000/${d.image_path}`}
+                                         image_src={`http://10.42.0.1:8000/${d.image_path}`}
+                                         onFoodDelete = {deleteFood}
                                          food_name={d.food_name}
                                          rate={d.rate}>
-                                        {JSON.stringify(d)}
                                 </FoodCard>
                     })}
                 </div>
@@ -156,9 +171,9 @@ const AddEditFood = () => {
 }
 
 
-const FoodCard = ({image_src, food_name, rate, children}) => {
+const FoodCard = ({image_src, food_name, rate, onFoodDelete}) => {
     return <div className="food_card">
-        <div><CrossButton/></div>
+        <div><CrossButton onClick={() => onFoodDelete(food_name)}/></div>
         <img src={image_src} className="food_card_image"/>
         <div className="food_name">{food_name}</div>
         <div className="food_rate">{rate}</div>
@@ -176,6 +191,7 @@ const AddFoodDialog = ({isOpen, onClose, onSaveClick}) => {
     };
 
     const onSave = () => {
+        if(food_name.current.value.length > 1 && parseInt(food_rate.current.value) > 0 && images.length >= 1){
         setImages([]);
         onSaveClick({
             food_name : food_name.current.value,
@@ -183,6 +199,7 @@ const AddFoodDialog = ({isOpen, onClose, onSaveClick}) => {
             image_data: images[0].data_url.substring(images[0].data_url.indexOf(",") + 1),
             file_name: images[0].file.name,
         });
+        }
     }
 
     return <Dialog open={isOpen} onClose={onClose}>

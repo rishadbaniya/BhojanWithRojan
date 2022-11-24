@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { AddAdmin } from '../Components/add_admin/index'
 import { EditAdmin } from '../Components/edit_admin/index';
-import { EditStaff } from '../Components/edit_staff/index';
-import { AddStaff } from '../Components/add_staff';
+import { EditUser } from '../Components/edit_user/index';
 import { AddUser } from '../Components/add_user';
 import AddEditFood from '../Components/add_edit_food';
 
@@ -21,13 +20,13 @@ const PageButtonClicked = (index, token, username) => {
       return <AddUser username={username}/>;
       break;
     case 3:
-      return <></>;
+      return <><EditUser /></>;
       break
     case 4:
-      return <AddStaff/>;
+      return <></>;
       break;
     case 5:
-      return <EditStaff username={username} token={token}/>;
+      return <></>;
       break;
     case 6:
       return <AddEditFood />;
@@ -51,8 +50,6 @@ const Admin = ({token, username}) => {
             <PageButton index={1} currentIndex={pageIndex} onClick={() => changePageIndex(1)}>Edit Admin</PageButton>
           </> : <></>
         } 
-        <PageButton index={4} currentIndex={pageIndex} onClick={() => changePageIndex(4)}>Add Staff</PageButton>
-        <PageButton index={5} currentIndex={pageIndex} onClick={() => changePageIndex(5)}>Edit Staff</PageButton>
         <PageButton index={6} currentIndex={pageIndex} onClick={() => changePageIndex(6)}>Add/Edit Food</PageButton>
         <PageButton index={2} currentIndex={pageIndex} onClick={() => changePageIndex(2)}>Add User</PageButton>
         <PageButton index={3} currentIndex={pageIndex} onClick={() => changePageIndex(3)}>Edit User</PageButton>

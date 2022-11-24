@@ -10,6 +10,7 @@
 #include "../components/EditAdmin.h"
 #include "../components/AddUser.h"
 #include "../components/AddEditFood.h"
+#include "../components/EditUser.h"
 
 using namespace std;
 
@@ -19,9 +20,13 @@ const string GET_ADMINS = "/get_admins"; // ✅
 const string DELETE_ADMIN = "/delete_admin";
 
 const string ADD_USER = "/add_user"; // ✅
+const string GET_USERS = "/get_users"; // ✅
 const string EDIT_USER = "/edit_user";
+const string DELETE_USER = "/delete_user";
+
 const string ADD_STAFF = "/add_staff";
 const string EDIT_STAFF = "/edit_staff";
+
 
 
 // API to operate on food category
@@ -39,7 +44,8 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
     auto resp= drogon::HttpResponse::newHttpResponse(); 
     resp->setStatusCode(k200OK);
     resp->setContentTypeCode(CT_TEXT_PLAIN);
-    
+    cout << req->bodyData() << endl;
+    cout << req->path() << endl;
     // /admin_login
     if(req->path() == ADMIN_LOGIN){
         // Possible replies from the endpoint /admin_login are :
@@ -77,17 +83,27 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
     // /get_admins
     }else if(req->path() == GET_ADMINS){
         resp->setBody(getAdmins());
+
     }else if(req->path() == DELETE_ADMIN){
         resp->setBody(deleteAdmin(req->bodyData()));
+
     }else if(req->path() == ADD_USER){
         AddUser add_user = AddUser(req->bodyData());
         resp->setBody(add_user.addToDatabase());
+
+    }else if(req->path() == GET_USERS){
+        cout << "CAME HERE TO GET USERS" << endl;
+        resp->setBody(getUsers());
+
+    }else if(req->path() == DELETE_USER){
+        string _id = string(req->bodyData());
+        int id = stoi(_id);
+        cout << "DELETE ID was " << id << endl;
+        resp->setBody(deleteUser(id));
+
     }else if(req->path() == EDIT_USER){
-        std::cout << "edit usrr" << std::endl;
-    }else if(req->path() == ADD_STAFF){
-        std::cout << "add staff" << std::endl;
-    }else if(req->path() == EDIT_STAFF){
-        std::cout << "edit staff" << std::endl;
+        resp->setBody(editBalance(req->bodyData()));
+
     }else if(req->path() == GET_FOOD_CATEGORY){
         AddEditFoodCategory add_edit_food_category = AddEditFoodCategory(req->bodyData());
         resp->setBody(add_edit_food_category.perform_operation());
@@ -105,6 +121,7 @@ void AdminController::asyncHandleHttpRequest(const HttpRequestPtr& req, std::fun
         resp->setBody(add_food.add_food());
 
     }else if(req->path() == DELETE_FOOD){
+        resp->setBody(deleteFood(req->bodyData()));
 
     }else if(req->path() == GET_FOODS){
         resp->setBody(AddEditFood::get_foods(req->bodyData()));

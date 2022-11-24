@@ -6,14 +6,14 @@ import { QWebChannel } from "qwebchannel";
 
 const QT_WEBSOCKET_ADDRESS = "ws://localhost:12355"
 
-const StaffInformation = (props) => {
-  return <div className="staff_information">
-    </div>
-} 
-
-
+const getOrders = (callback) => {
+    window.qt_object.getOrders(JSON.stringify({operation : "GET_ORDERS"}));
+    window.qt_object.getOrdersResponse.connect((b) => {
+      return callback(b);
+    });
+}
 // Tab that displays the users that are in the queue for that food
-const CurrentQueue = () => {
+const CurrentQueue = ({updateQueueNo}) => {
   const [dialogState, setDialogState] = useState({
     show : false,
     bill : [] 
@@ -42,23 +42,35 @@ const CurrentQueue = () => {
         ...data,
         total_amount : total
       }
-
+      console.log(JSON.stringify(data));
       window.qt_object.deleteOrCompleteOrder(JSON.stringify(data));
       onDialogClose();
   }
 
   useEffect(()=> {
-    window.setTimeout(() =>{
-      console.log("FUCK BRO");
-      window.qt_object.getOrders(JSON.stringify({operation : "GET_ORDERS"}));
-      window.qt_object.getOrdersResponse.connect((b) => {
-        try{
-          updateOrders(JSON.parse(b));
-          console.log(JSON.parse(b));
-       }catch(e){
-        }
-      });
-    }, 1000);
+      window.setTimeout(()=>{
+
+          getOrders((d) => {
+            try{
+              const _orders = JSON.parse(d);
+              updateOrders(_orders);
+              console.log(_orders.length);
+              updateQueueNo(_orders.length);
+            }catch(e){}
+          });
+
+          window.setInterval(() => {
+
+          getOrders((d) => {
+            try{
+              const _orders = JSON.parse(d);
+              updateOrders(_orders);
+              console.log(_orders.length);
+              updateQueueNo(_orders.length);
+            }catch(e){}
+          });
+          }, 4000);
+          }, 3000);
   },[]);
 
   return <>
@@ -113,10 +125,11 @@ const Order = ({id, orders, updateDialog, onCompleteOrDelete, index}) => {
     </div></div>
 }
 
-const QueueImmediateDetails = () => {
+const QueueImmediateDetails = ({totalQueue}) => {
   return <>
     <div className="queue_immediate_details">
-        <div>Queue Details</div>
+        <div style={{fontWeight : "bold", fontSize : "28px", width : "100%", textAlign :"center" }}>In Queue</div>
+        <div style={{paddingTop : "16px", fontSize : "28px", width : "100%", textAlign : "center" }}>{totalQueue}</div>
     </div>
     </>
 }
@@ -142,11 +155,15 @@ function MyApp({ Component, pageProps }) {
     };
   }, []);
 
+  const [totalQueue, updateQueue] = useState(0);
+
   return <>
-    <StaffInformation />
-    <QueueImmediateDetails />
+    <QueueImmediateDetails totalQueue = {totalQueue} />
     <div className="root">
-      <CurrentQueue />
+      <Button variant='contained' color="error" style={{textTransform : "none" , position : "absolute", top : "16px" , left : "16px", fontSize : "18px"}} onClick={() => {
+          window.qt_object.exit();
+      }} >Exit</Button>
+      <CurrentQueue updateQueueNo={updateQueue}/>
     </div>
     </>
   }

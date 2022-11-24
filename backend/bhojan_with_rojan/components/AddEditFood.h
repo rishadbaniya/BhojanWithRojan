@@ -55,6 +55,28 @@ int deleteImagesExecCallBack(void* _, int argc, char **argv, char **azColName){
    return 0;
 }
 
+string deleteFood(string req){
+    cout << req << endl;
+    string food_name = req.substr(0, req.find(','));
+    string food_table = req.substr(req.find(',') + 1);
+
+   sqlite3* db;
+   int isConnected = sqlite3_open(DB.c_str(), &db);
+   if(isConnected == SQLITE_OK){
+       string query = "DELETE FROM TABLE_NAME where food_name = 'FOOD_NAME'";
+       query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), food_table);
+       query.replace(query.find("FOOD_NAME"), strlen("FOOD_NAME"), food_name);
+        
+       sqlite3_exec(db, query.c_str(), NULL, NULL, NULL);
+       cout << query << endl;
+       sqlite3_close(db);
+       return "OK";
+   }else{
+       sqlite3_close(db);
+       return "DATABASE_ERROR_OCCURED";
+   }
+}
+
 class AddEditFoodCategory{
     public:
         string category_name; // Name of the food category
@@ -89,6 +111,7 @@ class AddEditFoodCategory{
                     }else{
                         return "INVALID_OPERATION";
                     }
+
                 }else{
                     sqlite3_close(db);
                     return "DATABASE_ERROR_OCCURED";

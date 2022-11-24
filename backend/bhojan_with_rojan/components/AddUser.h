@@ -18,6 +18,74 @@
 using namespace rapidjson;
 using namespace std;
 
+string ____get_epoch_time(){
+    const auto now = chrono::system_clock::now();
+    const auto epoch =  now.time_since_epoch();
+    const auto second =  chrono::duration_cast<chrono::seconds>(epoch);
+    long long int a = second.count();
+    return to_string(a);
+}
+
+int ____getTransactionHistorycallback(void* _transactionHistory, int argc, char **argv, char **azColName){
+   string* transaction_history = (string*)_transactionHistory;
+   if(argv[0] != nullptr){
+        *transaction_history = argv[0];
+   }
+   return 0;
+}
+
+void ___saveToTransactionHistory(sqlite3* db, int balance_bef, int balance_after, int id){
+    string query = "SELECT transaction_history from TABLE_NAME where id='ID'";
+    query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), USER_TABLE);
+    query.replace(query.find("ID"), strlen("ID"), to_string(id));
+
+    string transaction_history = "";
+    cout << query<< endl;
+    sqlite3_exec(db, query.c_str(), ____getTransactionHistorycallback, &transaction_history, NULL);
+    string epoch_time = ____get_epoch_time();
+    string transaction = "{"
+                         " \"transaction\" : \"TRANSFER_IN\","
+                         " \"date\" : \"EPOCH_TIME\","
+                         " \"bill\" : \"BILL\","
+                         " \"balance_before\" : BALANCE_BEFORE,"
+                         " \"balance_after\" : BALANCE_AFTER"
+                         "}";
+    
+    string bill = "";
+        bill = "From : admin" ;
+        bill.append(" , Amount : ");
+        bill.append(to_string(balance_after - balance_bef));
+
+    transaction.replace(transaction.find("EPOCH_TIME"), strlen("EPOCH_TIME"), epoch_time);
+    transaction.replace(transaction.find("BILL"), strlen("BILL"), bill);
+    transaction.replace(transaction.find("BALANCE_BEFORE"), strlen("BALANCE_BEFORE"), to_string(balance_bef));
+    transaction.replace(transaction.find("BALANCE_AFTER"), strlen("BALANCE_AFTER"), to_string(balance_after));
+    
+    if(transaction_history.length() > 2){
+       transaction_history.append(",");
+    }
+
+    transaction_history.append(transaction);
+
+    query = "UPDATE TABLE_NAME SET transaction_history = 'NEW_HISTORY' where id='ID'";
+    query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), USER_TABLE);
+    query.replace(query.find("NEW_HISTORY"), strlen("NEW_HISTORY"), transaction_history);
+    query.replace(query.find("ID"), strlen("ID"), to_string(id));
+
+    cout << transaction_history << endl;
+    auto client = drogon::HttpClient::newHttpClient(PDF_GENERATION_BACKEND);
+    auto req = drogon::HttpRequest::newHttpRequest();
+    req->setMethod(drogon::Post);
+    req->setPath("/");
+
+    string body = to_string(id) + transaction_history;
+
+    req->setBody(body);
+    client->sendRequest(req);
+
+    sqlite3_exec(db, query.c_str(), NULL, NULL, NULL);
+
+}
 
 string getDOBString(DOB dob){
     string _dob = "";
@@ -87,7 +155,6 @@ class AddUser{
                     "transaction_history TEXT"
                 ")";
             query.replace(query.find("TABLE_NAME"), strlen("TABLE_NAME"), USER_TABLE);
-            cout << "CAME HERE " << endl;
             sqlite3_exec(db, query.c_str(), NULL, NULL, NULL);
         }
 
@@ -127,7 +194,11 @@ class AddUser{
                      query.replace(query.find("BALANCE"), strlen("BALANCE"), to_string(balance));
          
                      sqlite3_exec(db, query.c_str(), NULL, 0, NULL);
+
+                     ___saveToTransactionHistory(db, 0, balance, id);
                      sqlite3_close(db);
+
+                     
                      return "OK";
                  }else{
                      sqlite3_close(db);

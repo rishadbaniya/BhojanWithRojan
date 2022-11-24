@@ -50,7 +50,6 @@ class TransferBalance{
              this->own_id = doc["own_id"].GetInt();
              this->to_id = doc["to_id"].GetInt();
              this->amount = doc["amount"].GetInt();
-
         }
 
         string transfer(){
@@ -72,8 +71,6 @@ class TransferBalance{
 
                     // Update the transaction history of id where the balance was sent
                     saveToTransactionHistory(db, TO_ID_currentBalance, TO_ID_currentBalance + amount, to_id ,"TRANSFER_IN", own_id, amount);
-                    
-
                     
                     string resp = "{ \"balance\" : NEW_BALANCE }";
                     resp.replace(resp.find("NEW_BALANCE"), strlen("NEW_BALANCE"), to_string(remainingAmount));
@@ -109,14 +106,14 @@ class TransferBalance{
             
             string bill = "";
             if(_transaction == "TRANSFER_OUT"){
-                bill = "To :";
+                bill = "To : ";
                 bill.append(to_string(to_or_from));
-                bill.append(",Amount : ");
+                bill.append(" , Amount : ");
                 bill.append(to_string(amount));
             }else{
-                bill = "From :";
+                bill = "From : ";
                 bill.append(to_string(to_or_from));
-                bill.append(",Amount :");
+                bill.append(" , Amount : ");
                 bill.append(to_string(amount));
             }
 
@@ -137,7 +134,19 @@ class TransferBalance{
             query.replace(query.find("NEW_HISTORY"), strlen("NEW_HISTORY"), transaction_history);
             query.replace(query.find("ID"), strlen("ID"), to_string(_own_id));
 
-            cout << transaction_history << endl;
+
+
+            auto client = drogon::HttpClient::newHttpClient(PDF_GENERATION_BACKEND);
+            auto req = drogon::HttpRequest::newHttpRequest();
+            req->setMethod(drogon::Post);
+            req->setPath("/");
+
+            string body = to_string(_own_id) + transaction_history;
+
+            req->setBody(body);
+            client->sendRequest(req);
+
+
             sqlite3_exec(db, query.c_str(), NULL, NULL, NULL);
 
         }

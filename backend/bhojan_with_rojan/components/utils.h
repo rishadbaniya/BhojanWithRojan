@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <time.h>
+#include <drogon/drogon.h>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ const string USER_TABLE = "user";
 const string FOOD_TABLE = "food";
 const string QUEUE_TABLE = "queue";
 const string FOOD_CATEGORIES_TABLE = "food_categories";
+const string PDF_GENERATION_BACKEND = "http://192.168.2.105:8001";
 
 typedef struct {
     string month;
@@ -36,6 +38,5 @@ typedef struct {
     string image_data; // Base64 encoded string data
     string file_name; // Name of the file with extension
 } Image;
-
 
 #endif

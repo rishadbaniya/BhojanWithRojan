@@ -14,8 +14,12 @@ class AdminController : public drogon::HttpSimpleController<AdminController>{
     PATH_ADD("/delete_admin", HttpMethod::Post);
 
     PATH_ADD("/edit_admin", HttpMethod::Post);
+
     PATH_ADD("/add_user", HttpMethod::Post);
+    PATH_ADD("/get_users", HttpMethod::Post);
     PATH_ADD("/edit_user", HttpMethod::Post);
+    PATH_ADD("/delete_user", HttpMethod::Post);
+
     PATH_ADD("/add_staff", HttpMethod::Post);
     PATH_ADD("/edit_staff", HttpMethod::Post);
 

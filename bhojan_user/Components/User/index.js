@@ -82,7 +82,7 @@ const User = ({userData, onPayOrExit}) => {
             id ={id}    
             full_name={full_name}
             department={department}
-            image_url={"http://192.168.43.80:8000/"+ userData.image_path}
+            image_url={"http://10.42.0.1:8000/"+ userData.image_path}
             balance={balance}
             balanceUpdateCallback={updateBalance}
         />
@@ -172,7 +172,7 @@ const Foods = ({onItemClick}) => {
         <div className='food_grid'>
             {
                 currentFoods.map((d, i) => {
-                    return <FoodCard key={i} food_name={d.food_name} value={d.rate} image_url={`http://172.20.150.212:8000/${d.image_path}`} onClick={onItemClick} />
+                    return <FoodCard key={i} food_name={d.food_name} value={d.rate} image_url={`http://10.42.0.1:8000/${d.image_path}`} onClick={onItemClick} />
                 })
             }
         </div>

@@ -10,7 +10,7 @@ import MuiAlert from "@mui/material/Alert";
 import { NumberPad } from '../Login/NumberPad';
 import sha256 from 'sha256';
 
-const BACKEND_ADDRESS = "http://192.168.43.80:8000";
+const BACKEND_ADDRESS = "http://10.42.0.1:8001";
 
 const Transition = React.forwardRef(function Transition( props , ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -87,60 +87,45 @@ const DailyUsageDialog = ({open, onClose, id}) => {
             data = JSON.parse(data);
             data = data.filter((d) => d.transaction === "BUY");
             console.log(data);
-            let sortedData = new Array();
-            data.map((__d, i) => {
+            //{
+            //   date : "22323",
+            //   data : [
+            //
+            //   ]
+            //}
+            data = data.map((d, i) => {
+               const date = new Date(0);
+               date.setUTCSeconds(parseInt(d.date));
+               date = `${toMonthName(date.getMonth())}/${date.getDate()}`
+                return {
+                    ...d,
+                    date : date
+                }
+            });
+            
+            let allDates = new Set();
+            data.map((d) => {
+                allDates.add(d.date);
+            })
+            
+            let datesAndAmounts = [];
+            Array.from(allDates).map((date) => {
                 let totalSpent = 0;
-                console.log(__d.date);
-                let bill = JSON.parse(__d.bill);
-                bill.map((billD) => {
-                    totalSpent += billD.rate * billD.quantity;
-                });
-
-                data.map((___d, _i)=>{
-                    if(i !== _i && __d.time === ___d.time ){
-                        let _bill = JSON.parse(___d.bill);
-                        _bill.map((_billD) => {
+                data.map((d) => {
+                    if(d.date === date){
+                        let bill = JSON.parse(d.bill);
+                        bill.map((_billD) => {
                             totalSpent += _billD.rate * _billD.quantity;
                         });
                     }
                 });
 
-                const date = new Date(0);
-                date.setUTCSeconds(parseInt(__d.date));
-                date = `${toMonthName(date.getMonth())}/${date.getDate()}`
-
-                sortedData.push({
+                datesAndAmounts.push({
                     name : date,
                     AmountSpent : totalSpent
-                },
-                );
-            });
-
-            // Bubble sort the array of date from small to big
-            for(var i = 0; i < sortedData.length; i++){
-                for(var j = 0; j < sortedData.length - 1; j++){
-                    if(sortedData[j] > sortedData[j + 1]){
-                        let temp = sortedData[j];
-                        sortedData[j] = sortedData[j+1];
-                        sortedData[j + 1] = temp;
-                    }
-                }
-
-            }
-
-            sortedData = sortedData.map((item, pos) =>{
-                return JSON.stringify(item);
-            });
-
-            sortedData = sortedData.filter((item, pos) =>{
-                return sortedData.indexOf(item) === pos;
-            });
-
-            sortedData = sortedData.map((item, pos) =>{
-                return JSON.parse(item);
-            });
-
-            updateChartData(sortedData);
+                })
+            })
+            updateChartData(datesAndAmounts);
         });
         
     }, []);

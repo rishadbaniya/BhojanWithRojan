@@ -2,6 +2,7 @@ import Admin from "./Admin";
 import sha256 from "sha256";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import {EnterPassword, EnterUsername, LoginButton} from '../Components/admin_login/index';
 import DevelopedBy from '../Components/DevelopedBy';
@@ -93,6 +94,7 @@ export default function Home() {
 
   return (
     <>
+    
       <Snackbar
         open={snackBarState.isOpen}
         onClose={handleClose}
@@ -103,10 +105,11 @@ export default function Home() {
             {snackBarState.message}
           </MuiAlert>
       </Snackbar>
-
       <div className="root">
+        <ExitButton />
         {currentState.isLoggedIn ? (
           <>
+            <LogOutButton updateState={updateState}/>
             <Admin token={LOGIN_TOKEN} username={currentState.username.trim()}/>
           </>
         ) : (
@@ -121,4 +124,30 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+const LogOutButton = ({updateState}) => {
+    return <Button color="success" variant="contained" onClick={() => {
+        updateState({
+            isLoggedIn: false,
+            username: "",
+            password: "",
+      });
+    }} style={{
+        textTransform : "none",
+        position : "absolute",
+        bottom : "16px",
+        right : "100px"
+    }}>Log Out</Button>
+}
+
+const ExitButton = () => {
+    return <Button color="error" variant="contained" onClick={() => {
+      window.qt_object.exit();
+    }} style={{
+        textTransform : "none",
+        position : "absolute",
+        bottom : "16px",
+        right : "16px"
+    }}>Exit</Button>
 }

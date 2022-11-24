@@ -88,24 +88,20 @@ export const EditAdmin = ({token}) => {
         {
             allAdmins.length === 0 ? <div style={{width : "100%", display: "flex", justifyContent : "center"}}><CircularProgress/></div> :
             allAdmins.map((data, index) => {
-            return (<Admin full_name={"ABC"} key={index} username={data.username} index={index} onEditClick={onEditClick} onDeleteClick={onDeleteClick}/>)
+            return (<Admin key={index} username={data.username} index={index} onEditClick={onEditClick} onDeleteClick={onDeleteClick}/>)
         })
         }
    </div>
    </>
 }
 
-const Admin = ({full_name, username, onEditClick, index, onDeleteClick}) => {
+const Admin = ({username, onEditClick, index, onDeleteClick}) => {
    return <div className="editAdmin__admin">
     <div className="editAdmin_admin_full_name_numbering">
         <div className="editAdmin__admin_numbering">{index}</div>
-        <div className="editAdmin__admin_full_name">Full Name : {full_name}</div>
         <div className="editAdmin__admin_username">Username : {username}</div>
     </div>
     <div style={{}}>
-    <IconButton aria-label="upload picture" component="label" onClick={() => onEditClick(username)}>
-        <CreateIcon />
-      </IconButton>
     { username === "sudo" ? <></> :
     (<IconButton aria-label="upload picture" component="label" onClick={() => onDeleteClick(username)}>
         <DeleteForeverIcon />
